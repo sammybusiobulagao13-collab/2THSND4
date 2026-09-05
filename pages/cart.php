@@ -12,14 +12,20 @@ if (isset($_GET['add']) && $_GET['add'] == 1) {
         'name' => isset($_GET['name']) ? $_GET['name'] : 'Product',
         'price' => isset($_GET['price']) ? (float)$_GET['price'] : 0,
         'image' => isset($_GET['image']) ? $_GET['image'] : 'default.jpg',
-        'quantity' => isset($_GET['qty']) ? (int)$_GET['qty'] : 1
+        'quantity' => isset($_GET['qty']) ? (int)$_GET['qty'] : 1,
+        'stock' => isset($_GET['stock']) ? (int)$_GET['stock'] : 10
     ];
     
     // Check if product already exists
     $found = false;
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['name'] === $product['name']) {
-            $item['quantity'] += $product['quantity'];
+            if ($item['quantity'] + $product['quantity'] <= $item['stock']) {
+                $item['quantity'] += $product['quantity'];
+            } else {
+                header('Location: cart.php?error=stock');
+                exit();
+            }
             $found = true;
             break;
         }
@@ -53,7 +59,10 @@ if (isset($_GET['clear'])) {
 if (isset($_POST['update'])) {
     foreach ($_POST['quantity'] as $index => $qty) {
         if ($qty > 0 && isset($_SESSION['cart'][$index])) {
-            $_SESSION['cart'][$index]['quantity'] = (int)$qty;
+            $stock = isset($_SESSION['cart'][$index]['stock']) ? $_SESSION['cart'][$index]['stock'] : 10;
+            if ($qty <= $stock) {
+                $_SESSION['cart'][$index]['quantity'] = (int)$qty;
+            }
         }
     }
     header('Location: cart.php');
@@ -126,7 +135,7 @@ foreach ($cart as $item) {
     <section class="cart-page">
         <div class="container">
             <div class="cart-header">
-                <h1> SHOPPING CART</h1>
+                <h1>🛒 YOUR CART</h1>
                 <p>Review your items before checkout</p>
             </div>
             
@@ -139,6 +148,7 @@ foreach ($cart as $item) {
                                     <th>Product</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
+                                    <th>Stock</th>
                                     <th>Total</th>
                                     <th>Action</th>
                                 </tr>
@@ -153,7 +163,18 @@ foreach ($cart as $item) {
                                         <td class="cart-price">₱<?php echo number_format($item['price'], 2); ?></td>
                                         <td class="cart-quantity">
                                             <input type="number" name="quantity[<?php echo $index; ?>]" 
-                                                   value="<?php echo $item['quantity']; ?>" min="1" max="99">
+                                                   value="<?php echo $item['quantity']; ?>" 
+                                                   min="1" 
+                                                   max="<?php echo isset($item['stock']) ? $item['stock'] : 10; ?>">
+                                        </td>
+                                        <td class="cart-stock">
+                                            <?php 
+                                            $stock = isset($item['stock']) ? $item['stock'] : 10;
+                                            echo $stock; 
+                                            ?>
+                                            <?php if ($stock <= 3): ?>
+                                                <span style="color: #ff4444; font-size: 12px; margin-left: 5px;">⚠️ Low Stock</span>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="cart-total">₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
                                         <td class="cart-remove">
@@ -168,7 +189,8 @@ foreach ($cart as $item) {
                     </div>
                     
                     <div class="cart-actions">
-                        <a href="shop.php" class="btn btn-secondary">← Continue Shopping</a>
+                        <a href="shop.php" class="btn btn-secondary">Continue Shopping</a>
+                        <button type="submit" name="update" class="btn btn-primary">Update Cart</button>
                         <a href="cart.php?clear=1" class="btn btn-danger" onclick="return confirm('Clear all items?')">Clear Cart</a>
                     </div>
                     
@@ -194,7 +216,7 @@ foreach ($cart as $item) {
             <?php else: ?>
                 <div class="empty-cart-page">
                     <i class="fas fa-shopping-cart fa-4x"></i>
-                    <h2>cart is empty</h2>
+                    <h2>Your cart is empty</h2>
                     <p>Looks like you haven't added any items to your cart yet.</p>
                     <a href="shop.php" class="btn btn-primary">Start Shopping</a>
                 </div>

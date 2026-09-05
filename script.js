@@ -155,18 +155,23 @@ addToCartBtns.forEach(function(btn) {
             imagePath = src.split('/').pop();
         }
         
+        // ===== GET STOCK FROM DATA ATTRIBUTE =====
+        const stock = this.dataset.stock || 10;
+        
         // I-print sa console para ma-verify
         console.log('Adding to cart:', {
             name: productName,
             price: cleanPrice,
-            image: imagePath
+            image: imagePath,
+            stock: stock
         });
         
-        // I-redirect sa cart.php
+        // I-redirect sa cart.php with stock
         const url = 'cart.php?add=1&name=' + encodeURIComponent(productName) + 
                     '&price=' + encodeURIComponent(cleanPrice) + 
                     '&image=' + encodeURIComponent(imagePath) + 
-                    '&qty=1';
+                    '&qty=1' +
+                    '&stock=' + encodeURIComponent(stock);
         
         window.location.href = url;
     });
@@ -181,6 +186,7 @@ if (buyMoreBtn) {
         // Mo-redirect na sa shop.php kay naay href ang button
     });
 }
+
 // ===== 8. GET YOURS NOW BUTTON =====
 const getYoursBtn = document.querySelector('.ratings-section .btn-primary');
 

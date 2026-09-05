@@ -17,50 +17,49 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 </head>
 <body>
     
-     <!-- ============================================
+    <!-- ============================================
          HEADER / NAVIGATION
          ============================================ -->
-<nav class="navbar">
-    <div class="container">
-        <!-- Logo -->
-        <div class="nav-logo">
-            <a href="index.php">
-                <img src='../images/headerlogo.png' alt="2THSND4 Logo">
-            </a>
-        </div>
-        
-        <!-- Nav Links & Icons -->
-        <div class="nav-right">
-            <ul class="nav-links">
-                <li><a href="index.php">HOME</a></li>
-                <li><a href="shop.php" class="active">SHOP</a></li>
-                <li><a href="about.php">ABOUT</a></li>
-                <li><a href="contact.php">CONTACT</a></li>
-            </ul>
-            
-            <div class="nav-icons">
-                <!-- Search with Dropdown -->
-                <div class="search-wrapper">
-                    <a href="#" class="search-icon" id="searchToggle"><i class="fas fa-search"></i></a>
-                    <div class="search-dropdown" id="searchDropdown">
-                        <input type="text" placeholder="Search products..." id="searchInput">
-                        <button type="button"><i class="fas fa-arrow-right"></i></button>
-                    </div>
-                </div>
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-logo">
+                <a href="index.php">
+                    <img src='../images/headerlogo.png' alt="2THSND4 Logo">
+                </a>
             </div>
             
-            <!-- ===== DROPDOWN MENU (ILALOM SA MENU ICON) ===== -->
-<div class="dropdown-menu" id="dropdownMenu">
-    <ul>
-        <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-        <li><a href="#"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
-        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
-    </ul>
-</div>
-</nav>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="shop.php" class="active">SHOP</a></li>
+                    <li><a href="about.php">ABOUT</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
+                </ul>
+                
+                <div class="nav-icons">
+                    <div class="search-wrapper">
+                        <a href="#" class="search-icon" id="searchToggle"><i class="fas fa-search"></i></a>
+                        <div class="search-dropdown" id="searchDropdown">
+                            <input type="text" placeholder="Search products..." id="searchInput">
+                            <button type="button"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <ul>
+                        <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                        <li><a href="#"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+                        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
     <!-- ===== SHOP PAGE ===== -->
     <section class="shop-page">
         <div class="container">
@@ -77,12 +76,12 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                 <?php
                 // ===== PRODUCTS =====
                 $products = [
-                    ['name' => 'White Shirt', 'price' => '₱1,299.00', 'image' => 'tshirts.jpg.png'],
-                    ['name' => 'Jeans', 'price' => '₱1,899.00', 'image' => 'jeans.png'],
-                    ['name' => 'Black Cap', 'price' => '₱999.00', 'image' => 'caps.png'],
-                    ['name' => 'Oversized Hoody', 'price' => '₱1,599.00', 'image' => 'hoddies.png'],
-                    ['name' => 'Baggy White Jorts', 'price' => '₱1,199.00', 'image' => 'jorts.png'],
-                    ['name' => 'Muscle tee', 'price' => '₱899.00', 'image' => 'muscletee.jpg'],
+                    ['name' => 'White Shirt', 'price' => '₱1,299.00', 'image' => 'tshirts.jpg.png', 'stock' => 5],
+                    ['name' => 'Jeans', 'price' => '₱1,899.00', 'image' => 'jeans.png', 'stock' => 5],
+                    ['name' => 'Black Cap', 'price' => '₱999.00', 'image' => 'caps.png', 'stock' => 5],
+                    ['name' => 'Oversized Hoody', 'price' => '₱1,599.00', 'image' => 'hoddies.png', 'stock' => 5],
+                    ['name' => 'Baggy White Jorts', 'price' => '₱1,199.00', 'image' => 'jorts.png', 'stock' => 5],
+                    ['name' => 'Muscle tee', 'price' => '₱899.00', 'image' => 'muscletee.jpg', 'stock' => 5],
                 ];
                 
                 // ===== FILTER PRODUCTS =====
@@ -99,6 +98,9 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                 // ===== DISPLAY =====
                 if (count($filteredProducts) > 0) {
                     foreach ($filteredProducts as $product) {
+                        // Clean price (remove ₱ and commas)
+                        $cleanPrice = str_replace('₱', '', str_replace(',', '', $product['price']));
+                        
                         echo '
                         <div class="product-card">
                             <div class="product-image">
@@ -106,7 +108,13 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                             </div>
                             <h3>' . $product['name'] . '</h3>
                             <p class="price">' . $product['price'] . '</p>
-                            <a href="#" class="btn btn-add">Add to Cart</a>
+                            <a href="#" class="btn btn-add" 
+                               data-name="' . $product['name'] . '"
+                               data-price="' . $cleanPrice . '"
+                               data-image="' . $product['image'] . '"
+                               data-stock="' . $product['stock'] . '">
+                               Add to Cart
+                            </a>
                         </div>
                         ';
                     }
