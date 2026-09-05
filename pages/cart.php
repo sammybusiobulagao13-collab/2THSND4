@@ -169,7 +169,6 @@ foreach ($cart as $item) {
                     
                     <div class="cart-actions">
                         <a href="shop.php" class="btn btn-secondary">← Continue Shopping</a>
-                        <button type="submit" name="update" class="btn btn-primary">Update Cart</button>
                         <a href="cart.php?clear=1" class="btn btn-danger" onclick="return confirm('Clear all items?')">Clear Cart</a>
                     </div>
                     

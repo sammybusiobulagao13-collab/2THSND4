@@ -1440,7 +1440,7 @@ body {
 }
 
 .cart-table thead {
-    background: var(--primary-color);
+    background: var(--secondary-color);
 }
 
 .cart-table th {
