@@ -1,3 +1,7 @@
+<?php
+session_start();  // ← IDUGANG NI!
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,11 +51,20 @@
                 </button>
             </div>
             
-            <!-- ===== DROPDOWN MENU (ILALOM SA MENU ICON) ===== -->
+            <!-- ===== DROPDOWN MENU ===== -->
 <div class="dropdown-menu" id="dropdownMenu">
     <ul>
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-        <li><a href="#"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+        
+        <?php if (isset($_SESSION['user'])): ?>
+            <!-- NAAY NAKA-LOGIN -->
+            <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
+            <li><a href="../login/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        <?php else: ?>
+            <!-- WALA NAKA-LOGIN -->
+            <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+        <?php endif; ?>
+        
         <li><a href="#"><i class="fas fa-history"></i> History</a></li>
     </ul>
 </div>

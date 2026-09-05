@@ -1178,6 +1178,8 @@ body {
     font-size: 20px;
     color: var(--text-muted);
     margin-bottom: 10px;
+    font-weight: lighter;
+    letter-spacing: 1px;
 }
 
 .no-results strong {
@@ -1185,7 +1187,7 @@ body {
 }
 
 .no-results .suggestions {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     font-weight: 600;
 }
 
@@ -1694,4 +1696,176 @@ body {
     color: #ff4444;
     font-size: 12px;
     margin-left: 5px;
+}
+
+/* ============================================
+   LOGIN / SIGN UP PAGE
+   ============================================ */
+.login-page {
+    padding: 200px 0 80px;
+    background-color: #000000;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+}
+
+.login-wrapper {
+    max-width: 450px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 50px 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.login-wrapper h2 {
+    font-family: var(--font-primary);
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.login-wrapper .form-group {
+    margin-bottom: 18px;
+}
+
+.login-wrapper input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+}
+
+.login-wrapper input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.1);
+}
+
+.login-wrapper input::placeholder {
+    color: var(--text-muted);
+}
+
+.login-wrapper .btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+    letter-spacing: 1px;
+}
+
+.login-wrapper .btn-primary:hover {
+    background: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.7);
+}
+
+/* ===== ERROR MESSAGES ===== */
+.error-message {
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    border: 1px solid rgba(255, 68, 68, 0.1);
+}
+
+.field-error {
+    display: block;
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 5px;
+    font-family: Arial, sans-serif;
+}
+
+/* ===== FORM SWITCH ===== */
+.form-switch {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.form-switch a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.form-switch a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ===== BACK TO CART ===== */
+.form-back {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-back a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    transition: color 0.3s ease;
+}
+
+.form-back a:hover {
+    color: var(--primary-color);
+}
+
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 768px) {
+    .login-page {
+        padding: 150px 0 50px;
+    }
+    
+    .login-wrapper {
+        padding: 30px 20px;
+        margin: 0 15px;
+    }
+    
+    .login-wrapper h2 {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .login-wrapper {
+        padding: 25px 15px;
+    }
+    
+    .login-wrapper h2 {
+        font-size: 24px;
+    }
+    
+    .login-wrapper input {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
 }

@@ -1,7 +1,9 @@
 <?php
+session_start();  // ← IDUGANG NI!
 // ===== GET SEARCH QUERY =====
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,15 +51,23 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                     </button>
                 </div>
                 
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <ul>
-                        <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                        <li><a href="#"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
-                        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+                <!-- ===== DROPDOWN MENU ===== -->
+<div class="dropdown-menu" id="dropdownMenu">
+    <ul>
+        <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        
+        <?php if (isset($_SESSION['user'])): ?>
+            <!-- NAAY NAKA-LOGIN -->
+            <li><a href="#"><i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['user']['name']); ?></a></li>
+            <li><a href="../login/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        <?php else: ?>
+            <!-- WALA NAKA-LOGIN -->
+            <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+        <?php endif; ?>
+        
+        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+    </ul>
+</div>
     </nav>
     
     <!-- ===== SHOP PAGE ===== -->
@@ -122,7 +132,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                     echo '
                     <div class="no-results">
                         <p>😕 No products found for <strong>"' . htmlspecialchars($searchQuery) . '"</strong></p>
-                        <p>Try searching for: <span class="suggestions">T-shirts, Jeans, Caps, Hoodies, Jorts</span></p>
+                        <p>Try searching for: <span class="suggestions">shirt, Jeans, Caps, Hoody, Jorts</span></p>
                         <a href="shop.php" class="btn btn-primary">View All Products</a>
                     </div>
                     ';
