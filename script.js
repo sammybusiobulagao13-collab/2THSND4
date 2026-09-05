@@ -155,23 +155,18 @@ addToCartBtns.forEach(function(btn) {
             imagePath = src.split('/').pop();
         }
         
-        // ===== GET STOCK FROM DATA ATTRIBUTE =====
-        const stock = this.dataset.stock || 10;
-        
         // I-print sa console para ma-verify
         console.log('Adding to cart:', {
             name: productName,
             price: cleanPrice,
-            image: imagePath,
-            stock: stock
+            image: imagePath
         });
         
-        // I-redirect sa cart.php with stock
+        // I-redirect sa cart.php
         const url = 'cart.php?add=1&name=' + encodeURIComponent(productName) + 
                     '&price=' + encodeURIComponent(cleanPrice) + 
                     '&image=' + encodeURIComponent(imagePath) + 
-                    '&qty=1' +
-                    '&stock=' + encodeURIComponent(stock);
+                    '&qty=1';
         
         window.location.href = url;
     });
@@ -186,7 +181,6 @@ if (buyMoreBtn) {
         // Mo-redirect na sa shop.php kay naay href ang button
     });
 }
-
 // ===== 8. GET YOURS NOW BUTTON =====
 const getYoursBtn = document.querySelector('.ratings-section .btn-primary');
 
@@ -308,3 +302,29 @@ if (dropdownToggle && dropdownMenu) {
 }
 
 console.log('✅ 2THSND4 website is fully functional!');
+
+// ============================================
+// LOGOUT CONFIRMATION MODAL
+// ============================================
+function showLogoutModal(event) {
+    event.preventDefault();
+    const modal = document.getElementById('logoutModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeLogoutModal() {
+    const modal = document.getElementById('logoutModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('logoutModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});

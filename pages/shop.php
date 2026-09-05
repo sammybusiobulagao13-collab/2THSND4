@@ -1,9 +1,17 @@
 <?php
-session_start();  // ← IDUGANG NI!
-// ===== GET SEARCH QUERY =====
-$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
-?>
+session_start();
 
+// ===== HANDLE LOGOUT =====
+if (isset($_GET['logout']) && $_GET['logout'] == 1) {
+    session_unset();
+    session_destroy();
+    header('Location: shop.php');
+    exit();
+}
+
+// ===== GET SEARCH QUERY =====
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUGANG NI!
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +66,12 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
         
         <?php if (isset($_SESSION['user'])): ?>
             <!-- NAAY NAKA-LOGIN -->
-            <li><a href="#"><i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['user']['name']); ?></a></li>
-            <li><a href="../login/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
+            <li>
+                <a href="#" onclick="showLogoutModal(event)">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
         <?php else: ?>
             <!-- WALA NAKA-LOGIN -->
             <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
@@ -182,6 +194,21 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
             </div>
         </div>
     </footer>
+
+    <!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+<div class="logout-modal-overlay" id="logoutModal" style="display: none;">
+    <div class="logout-modal">
+        <div class="logout-modal-content">
+            
+        
+            <p>Are you sure you want to log out?</p>
+            <div class="logout-modal-actions">
+                <button class="btn btn-secondary" onclick="closeLogoutModal()">Cancel</button>
+                <a href="index.php?logout=1" class="btn btn-primary">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
     
     <script src="../script.js"></script>
 </body>
