@@ -57,22 +57,19 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
        
 <div class="dropdown-menu" id="dropdownMenu">
     <ul>
+        <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
         
         <?php if (isset($_SESSION['user'])): ?>
-          
-            <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
-            <li>
-                <a href="#" onclick="showLogoutModal(event)">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </li>
+            
+            
+            <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
+            <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         <?php else: ?>
-         
-            <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+           
+            <li><a href="../login/login.php?redirect=home"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
         <?php endif; ?>
         
-        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
     </ul>
 </div>
 </nav>
@@ -132,7 +129,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         </div>
     </section>
     
-   
 <section class="featured-collection">
     <div class="container">
         <div class="section-header">
@@ -143,82 +139,47 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         <div class="carousel-wrapper">
             <div class="products-carousel" id="productsCarousel">
                 
-             
+                <?php
+                //FEATURED PRODUCTS
+                $featuredProducts = [
+                    ['id' => 1, 'name' => 'White Shirt', 'price' => '₱1,299.00', 'image' => 'tshirts.jpg.png', 'stock' => 5],
+                    ['id' => 2, 'name' => 'Denim Jeans', 'price' => '₱1,899.00', 'image' => 'jeans.png', 'stock' => 5],
+                    ['id' => 3, 'name' => 'Black Cap', 'price' => '₱999.00', 'image' => 'caps.png', 'stock' => 5],
+                    ['id' => 4, 'name' => 'Oversized Hoody', 'price' => '₱1,599.00', 'image' => 'hoddies.png', 'stock' => 5],
+                    ['id' => 5, 'name' => 'Baggy White Jort', 'price' => '₱1,199.00', 'image' => 'jorts.png', 'stock' => 5],
+                    ['id' => 6, 'name' => 'Muscle Tee', 'price' => '₱899.00', 'image' => 'muscletee.jpg', 'stock' => 5],
+                ];
+                
+                foreach ($featuredProducts as $product):
+                    $cleanPrice = str_replace('₱', '', str_replace(',', '', $product['price']));
+                ?>
+                
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php"> 
-                            <img src="../images/tshirts.jpg.png" alt="White Shirt">
+                        <a href="shop.php">
+                            <img src="../images/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>">
                         </a>
                     </div>
-                    <h3>White Shirt</h3>
-                    <p class="price">₱1,299.00</p>
-                    <a href="#" class="btn btn-add">Add to Cart</a>
+                    <h3><?php echo $product['name']; ?></h3>
+                    <p class="price"><?php echo $product['price']; ?></p>
+                    <a href="#" class="btn btn-add" 
+                       data-id="<?php echo $product['id']; ?>"
+                       data-name="<?php echo $product['name']; ?>"
+                       data-price="<?php echo $cleanPrice; ?>"
+                       data-image="<?php echo $product['image']; ?>"
+                       data-stock="<?php echo $product['stock']; ?>">
+                       Add to Cart
+                    </a>
                 </div>
                 
-            
-                <div class="product-card">
-                    <div class="product-image">
-                        <a href="shop.php">  
-                            <img src="../images/jeans.png" alt="Denim Jeans">
-                        </a>
-                    </div>
-                    <h3>Denim Jeans</h3>
-                    <p class="price">₱1,899.00</p>
-                    <a href="#" class="btn btn-add">Add to Cart</a>
-                </div>
-                
-               
-                <div class="product-card">
-                    <div class="product-image">
-                        <a href="shop.php">   
-                            <img src="../images/caps.png" alt="Black Cap">
-                        </a>
-                    </div>
-                    <h3>Black Cap</h3>
-                    <p class="price">₱999.00</p>
-                    <a href="#" class="btn btn-add">Add to Cart</a>
-                </div>
-                
-            
-                <div class="product-card">
-                    <div class="product-image">
-                        <a href="shop.php">  
-                            <img src="../images/hoddies.png" alt="Oversized Hoody">
-                        </a>
-                    </div>
-                    <h3>Oversized Hoody</h3>
-                    <p class="price">₱1,599.00</p>
-                    <a href="#" class="btn btn-add">Add to Cart</a>
-                </div>
-                
-             
-                <div class="product-card">
-                    <div class="product-image">
-                        <a href="shop.php">   
-                            <img src="../images/jorts.png" alt="Baggy White Jort">
-                        </a>
-                    </div>
-                    <h3>Baggy White Jort</h3>
-                    <p class="price">₱1,199.00</p>
-                    <a href="#" class="btn btn-add">Add to Cart</a>
-                </div>
-                
-          
-                <div class="product-card">
-                    <div class="product-image">
-                        <a href="shop.php">   
-                            <img src="../images/muscletee.jpg" alt="Muscle Tee">
-                        </a>
-                    </div>
-                    <h3>Muscle Tee</h3>
-                    <p class="price">₱899.00</p>
-                    <a href="#" class="btn btn-add">Add to Cart</a>
-                </div>
+                <?php endforeach; ?>
                 
             </div>
         </div>
     </div>
-</section>
+</section>   
+
+
     
    
     <section class="buy-more-section">

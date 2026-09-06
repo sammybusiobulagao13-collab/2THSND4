@@ -124,42 +124,32 @@ if (shopNowBtn) {
 }
 
 
+//ADD TO CART FUNCTIONALITy
 const addToCartBtns = document.querySelectorAll('.btn-add');
 
 addToCartBtns.forEach(function(btn) {
     btn.addEventListener('click', function(e) {
         e.preventDefault();
-     
-        const card = this.closest('.product-card');
         
-        if (!card) {
-            console.error('Product card not found!');
-            return;
-        }
+        const productId = this.dataset.id;
+        const productName = this.dataset.name;
+        const productPrice = this.dataset.price;
+        const productImage = this.dataset.image;
+        const productStock = this.dataset.stock;
         
-   
-        const productName = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Product';
-        const productPrice = card.querySelector('.price') ? card.querySelector('.price').textContent : '0.00';
-        const cleanPrice = productPrice.replace(/[₱,]/g, '').trim();
-        
-        const imgElement = card.querySelector('.product-image img');
-        let imagePath = 'default.jpg';
-        if (imgElement) {
-            const src = imgElement.getAttribute('src');
-            imagePath = src.split('/').pop();
-        }
-        
-       
         console.log('Adding to cart:', {
+            id: productId,
             name: productName,
-            price: cleanPrice,
-            image: imagePath
+            price: productPrice,
+            image: productImage,
+            stock: productStock
         });
         
-    
-        const url = 'cart.php?add=1&name=' + encodeURIComponent(productName) + 
-                    '&price=' + encodeURIComponent(cleanPrice) + 
-                    '&image=' + encodeURIComponent(imagePath) + 
+        const url = 'cart.php?add=1&id=' + encodeURIComponent(productId) + 
+                    '&name=' + encodeURIComponent(productName) + 
+                    '&price=' + encodeURIComponent(productPrice) + 
+                    '&image=' + encodeURIComponent(productImage) + 
+                    '&stock=' + encodeURIComponent(productStock) + 
                     '&qty=1';
         
         window.location.href = url;

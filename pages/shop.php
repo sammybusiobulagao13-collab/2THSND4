@@ -59,22 +59,23 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                 
 <div class="dropdown-menu" id="dropdownMenu">
     <ul>
+        <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
         
         <?php if (isset($_SESSION['user'])): ?>
            
-            <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
-            <li>
-                <a href="#" onclick="showLogoutModal(event)">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </li>
+        
         <?php else: ?>
          
             <li><a href="../login/login.php?redirect=home"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
         <?php endif; ?>
         
         <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+        <li>
+                <a href="#" onclick="showLogoutModal(event)">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
     </ul>
 </div>
     </nav>
@@ -95,13 +96,13 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                 <?php
             
                 $products = [
-                    ['name' => 'White Shirt', 'price' => '₱1,299.00', 'image' => 'tshirts.jpg.png', 'stock' => 5],
-                    ['name' => 'Jeans', 'price' => '₱1,899.00', 'image' => 'jeans.png', 'stock' => 5],
-                    ['name' => 'Black Cap', 'price' => '₱999.00', 'image' => 'caps.png', 'stock' => 5],
-                    ['name' => 'Oversized Hoody', 'price' => '₱1,599.00', 'image' => 'hoddies.png', 'stock' => 5],
-                    ['name' => 'Baggy White Jorts', 'price' => '₱1,199.00', 'image' => 'jorts.png', 'stock' => 5],
-                    ['name' => 'Muscle tee', 'price' => '₱899.00', 'image' => 'muscletee.jpg', 'stock' => 5],
-                ];
+    ['id' => 1, 'name' => 'White Shirt', 'price' => '₱1,299.00', 'image' => 'tshirts.jpg.png', 'stock' => 5],
+    ['id' => 2, 'name' => 'Jeans', 'price' => '₱1,899.00', 'image' => 'jeans.png', 'stock' => 5],
+    ['id' => 3, 'name' => 'Black Cap', 'price' => '₱999.00', 'image' => 'caps.png', 'stock' => 5],
+    ['id' => 4, 'name' => 'Oversized Hoody', 'price' => '₱1,599.00', 'image' => 'hoddies.png', 'stock' => 5],
+    ['id' => 5, 'name' => 'Baggy White Jorts', 'price' => '₱1,199.00', 'image' => 'jorts.png', 'stock' => 5],
+    ['id' => 6, 'name' => 'Muscle tee', 'price' => '₱899.00', 'image' => 'muscletee.jpg', 'stock' => 5],
+];
                 
               
                 $filteredProducts = $products;
@@ -128,12 +129,13 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                             <h3>' . $product['name'] . '</h3>
                             <p class="price">' . $product['price'] . '</p>
                             <a href="#" class="btn btn-add" 
-                               data-name="' . $product['name'] . '"
-                               data-price="' . $cleanPrice . '"
-                               data-image="' . $product['image'] . '"
-                               data-stock="' . $product['stock'] . '">
-                               Add to Cart
-                            </a>
+   data-id="' . $product['id'] . '"
+   data-name="' . $product['name'] . '"
+   data-price="' . $cleanPrice . '"
+   data-image="' . $product['image'] . '"
+   data-stock="' . $product['stock'] . '">
+   Add to Cart
+</a>
                         </div>
                         ';
                     }
