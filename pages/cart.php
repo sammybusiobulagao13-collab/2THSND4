@@ -215,7 +215,7 @@ foreach ($cart as $item) {
                                 <span>Total:</span>
                                 <span id="grandTotal">₱<?php echo number_format($total, 2); ?></span>
                             </div>
-                            <a href="checkout.php" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
+                            <a href="../login/login.php?redirect=checkout" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
                         </div>
                     </div>
                 </form>

@@ -1918,10 +1918,10 @@ body {
     box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
 }
 
-/* CHECKOUT PAG */
+/* CHECKOUT PAGe */
 .checkout-page {
     padding: 200px 0 80px;
-    background-color: #0a0a1a;
+    background-color: #000000;
     min-height: 100vh;
 }
 
@@ -1995,12 +1995,12 @@ body {
 .checkout-item-details p {
     font-family: Arial, sans-serif;
     font-size: 13px;
-    color: var(--text-muted);
+    color: var(--primary-color);
 }
 
 .checkout-item-total {
     font-weight: 700;
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 .checkout-total {

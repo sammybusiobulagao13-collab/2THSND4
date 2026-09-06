@@ -2,9 +2,18 @@
 session_start();
 
 if (isset($_SESSION['user'])) {
-    header('Location: ../pages/checkout.php');
+    // Check if redirect parameter exists
+    $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
+    if ($redirect === 'checkout') {
+        header('Location: ../pages/checkout.php');
+    } else {
+        header('Location: ../pages/index.php');
+    }
     exit();
 }
+
+
+$redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
 
 
 $loginError = '';
@@ -12,13 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-   
+    // Dummy login (replace with database later)
     if ($email === 'test@email.com' && $password === 'password') {
         $_SESSION['user'] = [
             'name' => 'Test User',
             'email' => $email
         ];
-        header('Location: ../pages/checkout.php');
+        if ($redirect === 'checkout') {
+            header('Location: ../pages/checkout.php');
+        } else {
+            header('Location: ../pages/index.php');
+        }
         exit();
     } else {
         $loginError = 'Invalid email or password!';
@@ -42,7 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             'name' => $name,
             'email' => $email
         ];
-        header('Location: ../pages/checkout.php');
+        if ($redirect === 'checkout') {
+            header('Location: ../pages/checkout.php');
+        } else {
+            header('Location: ../pages/index.php');
+        }
         exit();
     }
 }
@@ -86,24 +103,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 <div class="dropdown-menu" id="dropdownMenu">
                     <ul>
                         <li><a href="../pages/cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                        <li><a href="login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+                        <li><a href="login.php?redirect=home"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
 
+  
     <section class="login-page">
         <div class="container">
             <div class="login-wrapper">
                 
-               
+                <!-- Login Form -->
                 <div class="login-form-container">
                     <h2>LOGIN</h2>
                     <?php if ($loginError): ?>
                         <div class="error-message"><?php echo $loginError; ?></div>
                     <?php endif; ?>
-                    <form method="POST" action="login.php">
+                    <form method="POST" action="login.php?redirect=<?php echo $redirect; ?>">
                         <div class="form-group">
                             <input type="email" name="email" placeholder="Email Address" required>
                         </div>
@@ -115,13 +133,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
                 </div>
                 
-               
+                <!-- Register Form -->
                 <div class="register-form-container" style="display: none;">
                     <h2>SIGN UP</h2>
                     <?php if ($registerError): ?>
                         <div class="error-message"><?php echo $registerError; ?></div>
                     <?php endif; ?>
-                    <form method="POST" action="login.php">
+                    <form method="POST" action="login.php?redirect=<?php echo $redirect; ?>">
                         <div class="form-group">
                             <input type="text" name="name" placeholder="Full Name" required>
                         </div>
@@ -139,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
                 </div>
                 
-              
+                <!-- Back to Cart -->
                 <div class="form-back">
                     <a href="../pages/cart.php">← Back to Cart</a>
                 </div>
@@ -148,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </section>
 
-
+   
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
