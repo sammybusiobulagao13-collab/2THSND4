@@ -76,9 +76,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
     </div>
 </nav>
 
-<!-- ============================================
-     ABOUT PAGE
-     ============================================ -->
+<!--ABOUT PAGE -->
 <section class="about-page">
     <div class="container">
         <div class="about-page-content">
@@ -116,7 +114,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
             <div class="about-customer-service">
                 <h2>CUSTOMER SERVICE</h2>
                 
-                <!-- ===== FAQS ===== -->
+                <!-- FAQS  -->
                 <div class="service-section" id="faqs">
                     <div class="service-header">
                         <span class="service-icon">❓</span>
@@ -142,7 +140,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                     </div>
                 </div>
                 
-                <!-- ===== SHIPPING INFORMATION ===== -->
+                <!--  SHIPPING INFORMATION  -->
                 <div class="service-section" id="shipping">
                     <div class="service-header">
                         <span class="service-icon">📦</span>
@@ -156,7 +154,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                     </div>
                 </div>
                 
-                <!-- ===== RETURN & EXCHANGE ===== -->
+                <!--  RETURN & EXCHANGE  -->
                 <div class="service-section" id="returns">
                     <div class="service-header">
                         <span class="service-icon">🔄</span>
@@ -170,7 +168,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                     </div>
                 </div>
                 
-                <!-- ===== PRIVACY POLICY ===== -->
+                <!--  PRIVACY POLICY  -->
                 <div class="service-section" id="privacy">
                     <div class="service-header">
                         <span class="service-icon">🔒</span>
@@ -183,7 +181,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                     </div>
                 </div>
                 
-                <!-- ===== TERMS & CONDITIONS ===== -->
+                <!-- TERMS & CONDITIONS  -->
                 <div class="service-section" id="terms">
                     <div class="service-header">
                         <span class="service-icon">📜</span>
@@ -203,7 +201,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
     </div>
 </section>
 
-<!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+<!--  LOGOUT CONFIRMATION MODAL  -->
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
     <div class="logout-modal">
         <div class="logout-modal-content">
