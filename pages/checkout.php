@@ -168,43 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
 
-  
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>QUICK LINKS</h4>
-                    <ul>
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="shop.php">Shop</a></li>
-                        <li><a href="about.php">About</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>CUSTOMER SERVICE</h4>
-                    <ul>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping Information</a></li>
-                        <li><a href="#">Return & Exchange</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>FOLLOW US</h4>
-                    <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">Tiktok</a></li>
-                        <li><a href="#">Facebook</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 2THSND4. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
 
     <script src="../script.js"></script>
 </body>

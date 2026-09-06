@@ -302,51 +302,51 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     
  
     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                
-             
-                <div class="footer-col">
-                    <h4>QUICK LINKS</h4>
-                    <ul>
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="shop.php">Shop</a></li>
-                        <li><a href="about.php">About</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                    </ul>
-                </div>
-                
-                
-                <div class="footer-col">
-                    <h4>CUSTOMER SERVICE</h4>
-                    <ul>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping Information</a></li>
-                        <li><a href="#">Return & Exchange</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                
-       
-                <div class="footer-col">
-                    <h4>FOLLOW US</h4>
-                    <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">Tiktok</a></li>
-                        <li><a href="#">Facebook</a></li>
-                    </ul>
-                </div>
-                
+    <div class="container">
+        <div class="footer-grid">
+            
+            <!-- QUICK LINKS -->
+            <div class="footer-col">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="shop.php">Shop</a></li>
+                    <li><a href="about.php">About</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                </ul>
             </div>
             
-          
-            <div class="footer-bottom">
-                <p>&copy; 2026 2THSND4. All Rights Reserved.</p>
+            <!-- CUSTOMER SERVICE -->
+            <!-- CUSTOMER SERVICE -->
+<div class="footer-col">
+    <h4>CUSTOMER SERVICE</h4>
+    <ul>
+        <li><a href="about.php#faqs">FAQs</a></li>
+        <li><a href="about.php#shipping">Shipping Information</a></li>
+        <li><a href="about.php#returns">Return & Exchange</a></li>
+        <li><a href="about.php#privacy">Privacy Policy</a></li>
+        <li><a href="about.php#terms">Terms & Conditions</a></li>
+    </ul>
+</div>
+            
+            <!-- FOLLOW US -->
+            <div class="footer-col">
+                <h4>FOLLOW US</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
+                    <li><a href="https://www.tiktok.com/" target="_blank">Tiktok</a></li>
+                    <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+                </ul>
             </div>
+            
         </div>
-    </footer>
-
+        
+        <!-- COPYRIGHT -->
+        <div class="footer-bottom">
+            <p>&copy; 2026 2THSND4. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
 
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
     <div class="logout-modal">

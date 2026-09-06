@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['user'])) {
-    // Check if redirect parameter exists
+    
     $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
     if ($redirect === 'checkout') {
         header('Location: ../pages/checkout.php');
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    // Dummy login (replace with database later)
+    
     if ($email === 'test@email.com' && $password === 'password') {
         $_SESSION['user'] = [
             'name' => 'Test User',
