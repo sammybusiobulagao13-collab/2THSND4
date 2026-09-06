@@ -2,6 +2,16 @@
 session_start();
 
 if (isset($_GET['logout']) && $_GET['logout'] == 1) {
+    // ===== ADD ACTIVITY LOG =====
+    if (!isset($_SESSION['activity_log'])) {
+        $_SESSION['activity_log'] = [];
+    }
+    $_SESSION['activity_log'][] = [
+        'type' => 'logout',
+        'message' => '🔒 User logged out',
+        'timestamp' => date('Y-m-d H:i:s')
+    ];
+    
     session_unset();
     session_destroy();
     header('Location: index.php');

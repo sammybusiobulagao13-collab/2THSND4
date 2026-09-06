@@ -31,8 +31,18 @@ if (isset($_GET['add']) && $_GET['add'] == 1) {
         }
     }
     if (!$found) {
-        $_SESSION['cart'][] = $product;
+    $_SESSION['cart'][] = $product;
+    
+    //ADD ACTIVITY LOG
+    if (!isset($_SESSION['activity_log'])) {
+        $_SESSION['activity_log'] = [];
     }
+    $_SESSION['activity_log'][] = [
+        'type' => 'cart_add',
+        'message' => '🛒 Added ' . $product['name'] . ' to cart',
+        'timestamp' => date('Y-m-d H:i:s')
+    ];
+}
     
     header('Location: cart.php');
     exit();

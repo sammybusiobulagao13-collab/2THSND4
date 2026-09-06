@@ -72,7 +72,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
             <li><a href="../login/login.php?redirect=home"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
         <?php endif; ?>
         
-        <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+       <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
         <li>
                 <a href="#" onclick="showLogoutModal(event)">
                     <i class="fas fa-sign-out-alt"></i> Logout
