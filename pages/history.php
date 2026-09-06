@@ -26,7 +26,7 @@ $activities = $_SESSION['activity_log'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2THSND4 - Activity History</title>
+    <title>2THSND4 - History</title>
     <link rel="icon" type="image/png" href="../images/forwbe.png">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -58,9 +58,9 @@ $activities = $_SESSION['activity_log'];
                 </div>
                 <div class="dropdown-menu" id="dropdownMenu">
                     <ul>
+                        <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
                         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
                         <?php if (isset($_SESSION['user'])): ?>
-                            <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
                             <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
                             <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                         <?php else: ?>

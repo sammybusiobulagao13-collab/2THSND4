@@ -108,7 +108,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                     </div>
                 </div>
                 
-                <form class="contact-form">
+               <form class="contact-form" onsubmit="submitContactForm(event)">
                     <div class="form-group">
                         <input type="text" placeholder="Your Name" required>
                     </div>
@@ -127,6 +127,15 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
         </div>
     </section>
 
+    <div class="popup-overlay" id="successPopup" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-icon">✅</div>
+            <h2>Message Sent!</h2>
+            <p>Your message has been sent successfully. We'll get back to you soon!</p>
+            <button class="btn btn-primary" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
 
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
     <div class="logout-modal">
@@ -141,7 +150,36 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
         </div>
     </div>
 </div>
+
+<script>
+function submitContactForm(event) {
+    event.preventDefault();
     
+    try {
+        const name = document.querySelector('.contact-form input[type="text"]');
+        const email = document.querySelector('.contact-form input[type="email"]');
+        const subject = document.querySelector('.contact-form input[placeholder="Subject"]');
+        const message = document.querySelector('.contact-form textarea');
+        
+        if (!name.value || !email.value || !subject.value || !message.value) {
+            alert('Please fill in all fields.');
+            return;
+        }
+        
+        document.getElementById('successPopup').style.display = 'flex';
+        document.querySelector('.contact-form').reset();
+    } catch (error) {
+        console.log('Error:', error);
+        alert('Something went wrong. Please try again.');
+    }
+}
+
+function closePopup() {
+    document.getElementById('successPopup').style.display = 'none';
+}
+
+console.log('Contact page script loaded!');
+</script>
     <script src="../script.js"></script>
 </body>
 </html>
