@@ -1,8 +1,8 @@
 <?php
 session_start();
+require_once '../pages/validation.php';
 
 if (isset($_SESSION['user'])) {
-    
     $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
     if ($redirect === 'checkout') {
         header('Location: ../pages/checkout.php');
@@ -12,7 +12,6 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-
 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
 
 
@@ -21,11 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    
+  
     if ($email === 'test@email.com' && $password === 'password') {
         $_SESSION['user'] = [
             'name' => 'Test User',
-            'email' => $email
+            'email' => $email,
+            'username' => 'testuser'
         ];
         if ($redirect === 'checkout') {
             header('Location: ../pages/checkout.php');
@@ -38,29 +38,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     }
 }
 
+$registerErrors = [];
+$registerData = [];
 
-$registerError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-    $name = $_POST['name'] ?? '';
-    $email = $_POST['email'] ?? '';
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
     
-    if ($password !== $confirmPassword) {
-        $registerError = 'Passwords do not match!';
-    } elseif (empty($name) || empty($email) || empty($password)) {
-        $registerError = 'Please fill in all fields!';
-    } else {
+    $errors = [];
+    
+   
+    $nameError = validateRequired($name, 'Full Name');
+    if ($nameError) {
+        $errors['name'] = $nameError;
+    }
+    
+    
+    $emailError = validateEmailFormat($email);
+    if ($emailError) {
+        $errors['email'] = $emailError;
+    }
+    
+    
+    $usernameError = validateUsername($username);
+    if ($usernameError) {
+        $errors['username'] = $usernameError;
+    }
+    
+    
+    $passwordError = validatePassword($password);
+    if ($passwordError) {
+        $errors['password'] = $passwordError;
+    }
+    
+   
+    $confirmError = validateConfirmPassword($password, $confirmPassword);
+    if ($confirmError) {
+        $errors['confirm_password'] = $confirmError;
+    }
+    
+   
+    if (empty($errors)) {
         $_SESSION['user'] = [
             'name' => $name,
-            'email' => $email
+            'email' => $email,
+            'username' => $username
         ];
+        
         if ($redirect === 'checkout') {
             header('Location: ../pages/checkout.php');
         } else {
             header('Location: ../pages/index.php');
         }
         exit();
+    } else {
+        $registerErrors = $errors;
+        $registerData = [
+            'name' => $name,
+            'email' => $email,
+            'username' => $username
+        ];
     }
 }
 ?>
@@ -77,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </head>
 <body>
     
-   
     <nav class="navbar">
         <div class="container">
             <div class="nav-logo">
@@ -110,12 +149,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </nav>
 
-  
+    
     <section class="login-page">
         <div class="container">
             <div class="login-wrapper">
                 
-                <!-- Login Form -->
+             
                 <div class="login-form-container">
                     <h2>LOGIN</h2>
                     <?php if ($loginError): ?>
@@ -133,21 +172,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
                 </div>
                 
-                <!-- Register Form -->
+             
                 <div class="register-form-container" style="display: none;">
                     <h2>SIGN UP</h2>
-                    <?php if ($registerError): ?>
-                        <div class="error-message"><?php echo $registerError; ?></div>
+                    
+                    <?php if (!empty($registerErrors)): ?>
+                        <?php foreach ($registerErrors as $error): ?>
+                            <div class="error-message"><?php echo $error; ?></div>
+                        <?php endforeach; ?>
                     <?php endif; ?>
+                    
                     <form method="POST" action="login.php?redirect=<?php echo $redirect; ?>">
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="Full Name" required>
+                            <input type="text" name="name" placeholder="Full Name" value="<?php echo htmlspecialchars($registerData['name'] ?? ''); ?>" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" name="email" placeholder="Email Address" required>
+                            <input type="email" name="email" placeholder="Email Address" value="<?php echo htmlspecialchars($registerData['email'] ?? ''); ?>" required>
                         </div>
                         <div class="form-group">
-                            <input type="password" name="password" placeholder="Password" required>
+                            <input type="text" name="username" placeholder="Username (min 6 characters)" value="<?php echo htmlspecialchars($registerData['username'] ?? ''); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="Password (min 6 chars, 1 uppercase, 1 lowercase, 1 number)" required>
                         </div>
                         <div class="form-group">
                             <input type="password" name="confirm_password" placeholder="Confirm Password" required>
@@ -157,52 +203,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
                 </div>
                 
-                <!-- Back to Cart -->
-                <div class="form-back">
-                    <a href="../pages/cart.php">← Back to Cart</a>
-                </div>
-                
             </div>
         </div>
     </section>
-
-   
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>QUICK LINKS</h4>
-                    <ul>
-                        <li><a href="../pages/index.php">Home</a></li>
-                        <li><a href="../pages/shop.php">Shop</a></li>
-                        <li><a href="../pages/about.php">About</a></li>
-                        <li><a href="../pages/contact.php">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>CUSTOMER SERVICE</h4>
-                    <ul>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping Information</a></li>
-                        <li><a href="#">Return & Exchange</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>FOLLOW US</h4>
-                    <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">Tiktok</a></li>
-                        <li><a href="#">Facebook</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 2THSND4. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
         function toggleForms() {
@@ -216,6 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 registerForm.style.display = 'block';
             }
         }
+
+        
     </script>
     <script src="../script.js"></script>
 </body>

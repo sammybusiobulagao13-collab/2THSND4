@@ -25,7 +25,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
   
 <nav class="navbar">
     <div class="container">
-        <!-- Logo -->
+      
         <div class="nav-logo">
             <a href="index.php">
                 <img src='../images/headerlogo.png' alt="2THSND4 Logo">
@@ -80,7 +80,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
   
     <section class="hero">
         <div class="container hero-container">
-            <!-- Left: Content -->
+         
             <div class="hero-content">
                 
                 <h1 class="hero-title">
@@ -146,7 +146,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
              
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
+                        <a href="shop.php"> 
                             <img src="../images/tshirts.jpg.png" alt="White Shirt">
                         </a>
                     </div>
@@ -158,7 +158,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
             
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
+                        <a href="shop.php">  
                             <img src="../images/jeans.png" alt="Denim Jeans">
                         </a>
                     </div>
@@ -170,7 +170,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
+                        <a href="shop.php">   
                             <img src="../images/caps.png" alt="Black Cap">
                         </a>
                     </div>
@@ -182,7 +182,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
             
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
+                        <a href="shop.php">  
                             <img src="../images/hoddies.png" alt="Oversized Hoody">
                         </a>
                     </div>
@@ -194,7 +194,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
              
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
+                        <a href="shop.php">   
                             <img src="../images/jorts.png" alt="Baggy White Jort">
                         </a>
                     </div>
@@ -206,7 +206,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
           
                 <div class="product-card">
                     <div class="product-image">
-                        <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
+                        <a href="shop.php">   
                             <img src="../images/muscletee.jpg" alt="Muscle Tee">
                         </a>
                     </div>
@@ -317,7 +317,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
             </div>
             
             <!-- CUSTOMER SERVICE -->
-            <!-- CUSTOMER SERVICE -->
 <div class="footer-col">
     <h4>CUSTOMER SERVICE</h4>
     <ul>
@@ -329,7 +328,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     </ul>
 </div>
             
-            <!-- FOLLOW US -->
+            
             <div class="footer-col">
                 <h4>FOLLOW US</h4>
                 <ul>
@@ -341,7 +340,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
             
         </div>
         
-        <!-- COPYRIGHT -->
+        
         <div class="footer-bottom">
             <p>&copy; 2026 2THSND4. All Rights Reserved.</p>
         </div>
