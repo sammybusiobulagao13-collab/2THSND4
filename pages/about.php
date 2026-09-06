@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// ===== HANDLE LOGOUT =====
+ 
 if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     session_unset();
     session_destroy();
@@ -9,7 +9,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     exit();
 }
 
-// ===== GET SEARCH QUERY =====
+
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUGANG NI!
 ?>
 
@@ -27,19 +27,16 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
 </head>
 <body>
 
- <!-- ============================================
-         HEADER / NAVIGATION
-         ============================================ -->
 <nav class="navbar">
     <div class="container">
-        <!-- Logo -->
+     
         <div class="nav-logo">
             <a href="index.php">
                 <img src='../images/headerlogo.png' alt="2THSND4 Logo">
             </a>
         </div>
         
-        <!-- Nav Links & Icons -->
+    
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="index.php">HOME</a></li>
@@ -49,7 +46,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
             </ul>
             
             <div class="nav-icons">
-                <!-- Search with Dropdown -->
+              
                 <div class="search-wrapper">
                     <a href="#" class="search-icon" id="searchToggle"><i class="fas fa-search"></i></a>
                     <div class="search-dropdown" id="searchDropdown">
@@ -62,13 +59,13 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                 </button>
             </div>
             
-            <!-- ===== DROPDOWN MENU ===== -->
+          
 <div class="dropdown-menu" id="dropdownMenu">
     <ul>
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
         
         <?php if (isset($_SESSION['user'])): ?>
-            <!-- NAAY NAKA-LOGIN -->
+          
             <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
             <li>
                 <a href="#" onclick="showLogoutModal(event)">
@@ -76,7 +73,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                 </a>
             </li>
         <?php else: ?>
-            <!-- WALA NAKA-LOGIN -->
+       
             <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
         <?php endif; ?>
         
@@ -85,9 +82,6 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
 </div>
 </nav>
 
-    <!-- ============================================
-         ABOUT PAGE
-         ============================================ -->
     <section class="about-page">
         <div class="container">
             <div class="about-page-content">
@@ -130,9 +124,7 @@ unique identity through bold apparel.</p>
         </div>
     </section>
     
-    <!-- ============================================
-         FOOTER
-         ============================================ -->
+
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -173,7 +165,7 @@ unique identity through bold apparel.</p>
         </div>
     </footer>
 
-    <!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+  
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
     <div class="logout-modal">
         <div class="logout-modal-content">

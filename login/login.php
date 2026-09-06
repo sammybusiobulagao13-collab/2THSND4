@@ -1,19 +1,18 @@
 <?php
 session_start();
 
-// Check if user is already logged in
 if (isset($_SESSION['user'])) {
     header('Location: ../pages/checkout.php');
     exit();
 }
 
-// Handle Login
+
 $loginError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    // Dummy login (replace with database later)
+   
     if ($email === 'test@email.com' && $password === 'password') {
         $_SESSION['user'] = [
             'name' => 'Test User',
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     }
 }
 
-// Handle Register
+
 $registerError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $name = $_POST['name'] ?? '';
@@ -61,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </head>
 <body>
     
-    <!-- ===== HEADER ===== -->
+   
     <nav class="navbar">
         <div class="container">
             <div class="nav-logo">
@@ -94,12 +93,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </nav>
 
-    <!-- ===== LOGIN / SIGN UP PAGE ===== -->
     <section class="login-page">
         <div class="container">
             <div class="login-wrapper">
                 
-                <!-- Login Form -->
+               
                 <div class="login-form-container">
                     <h2>LOGIN</h2>
                     <?php if ($loginError): ?>
@@ -117,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
                 </div>
                 
-                <!-- Register Form -->
+               
                 <div class="register-form-container" style="display: none;">
                     <h2>SIGN UP</h2>
                     <?php if ($registerError): ?>
@@ -141,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
                 </div>
                 
-                <!-- Back to Cart -->
+              
                 <div class="form-back">
                     <a href="../pages/cart.php">← Back to Cart</a>
                 </div>
@@ -150,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">

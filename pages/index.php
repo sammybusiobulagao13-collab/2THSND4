@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// ===== HANDLE LOGOUT =====
 if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     session_unset();
     session_destroy();
@@ -23,10 +22,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     
 </head>
 <body>
-    
-    <!-- ============================================
-         HEADER / NAVIGATION
-         ============================================ -->
+  
 <nav class="navbar">
     <div class="container">
         <!-- Logo -->
@@ -36,7 +32,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
             </a>
         </div>
         
-        <!-- Nav Links & Icons -->
+   
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="index.php" class="active">HOME</a></li>
@@ -46,7 +42,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
             </ul>
             
             <div class="nav-icons">
-                <!-- Search with Dropdown -->
+             
                 <div class="search-wrapper">
                     <a href="#" class="search-icon" id="searchToggle"><i class="fas fa-search"></i></a>
                     <div class="search-dropdown" id="searchDropdown">
@@ -58,14 +54,13 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
-            
-            <!-- ===== DROPDOWN MENU ===== -->
+       
 <div class="dropdown-menu" id="dropdownMenu">
     <ul>
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
         
         <?php if (isset($_SESSION['user'])): ?>
-            <!-- NAAY NAKA-LOGIN -->
+          
             <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
             <li>
                 <a href="#" onclick="showLogoutModal(event)">
@@ -73,7 +68,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                 </a>
             </li>
         <?php else: ?>
-            <!-- WALA NAKA-LOGIN -->
+         
             <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
         <?php endif; ?>
         
@@ -82,9 +77,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
 </div>
 </nav>
     
-    <!-- ============================================
-         HERO SECTION
-         ============================================ -->
+  
     <section class="hero">
         <div class="container hero-container">
             <!-- Left: Content -->
@@ -125,9 +118,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         </div>
     </section>
     
-    <!-- ============================================
-         QUOTE SECTION
-         ============================================ -->
+   
     <section class="quote-section">
         <div class="quote-overlay">
             <div class="container">
@@ -141,9 +132,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         </div>
     </section>
     
-    <!-- ============================================
-         FEATURED COLLECTION
-         ============================================ -->
+   
 <section class="featured-collection">
     <div class="container">
         <div class="section-header">
@@ -154,7 +143,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         <div class="carousel-wrapper">
             <div class="products-carousel" id="productsCarousel">
                 
-                <!-- Product 1 -->
+             
                 <div class="product-card">
                     <div class="product-image">
                         <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
@@ -166,7 +155,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     <a href="#" class="btn btn-add">Add to Cart</a>
                 </div>
                 
-                <!-- Product 2 -->
+            
                 <div class="product-card">
                     <div class="product-image">
                         <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
@@ -178,7 +167,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     <a href="#" class="btn btn-add">Add to Cart</a>
                 </div>
                 
-                <!-- Product 3 -->
+               
                 <div class="product-card">
                     <div class="product-image">
                         <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
@@ -190,7 +179,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     <a href="#" class="btn btn-add">Add to Cart</a>
                 </div>
                 
-                <!-- Product 4 -->
+            
                 <div class="product-card">
                     <div class="product-image">
                         <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
@@ -202,7 +191,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     <a href="#" class="btn btn-add">Add to Cart</a>
                 </div>
                 
-                <!-- Product 5 -->
+             
                 <div class="product-card">
                     <div class="product-image">
                         <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
@@ -214,7 +203,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     <a href="#" class="btn btn-add">Add to Cart</a>
                 </div>
                 
-                <!-- Product 6 -->
+          
                 <div class="product-card">
                     <div class="product-image">
                         <a href="shop.php">   <!-- ← SIGUROHA NGA shop.php -->
@@ -231,22 +220,20 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     </div>
 </section>
     
-    <!-- ============================================
-         BUY MORE, SAVE MORE SECTION
-         ============================================ -->
+   
     <section class="buy-more-section">
         <div class="container">
             <div class="buy-more-wrapper">
                 
-                <!-- LEFT: Image -->
+             
                 <div class="buy-more-image">
                     <img src="../images/bmmodel.png" alt="Buy More Save More">
                 </div>
                 
-                <!-- RIGHT: Content -->
+               
                 <div class="buy-more-content">
                     
-                    <!-- Features -->
+               
                     <div class="features-list">
                         <div class="feature-item">
                             <span class="feature-icon">✔️</span>
@@ -266,7 +253,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                         </div>
                     </div>
                     
-                    <!-- Title & Button -->
+                
                     <h2>BUY MORE, <br><span class="highlight">SAVE MORE</span></h2>
                     <a href="shop.php" class="btn btn-primary">GET YOURS NOW</a>
                     
@@ -276,26 +263,24 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         </div>
     </section>
     
-    <!-- ============================================
-         RATINGS SECTION
-         ============================================ -->
+  
     <section class="ratings-section">
         <div class="container">
             <div class="ratings-content">
                 
-                <!-- Rating Number + Stars -->
+           
                 <div class="rating-header">
                     <span class="rating-number">4.9</span>
                     <span class="rating-stars">⭐⭐⭐⭐⭐</span>
                 </div>
                 
-                <!-- Rating Text -->
+         
                 <p class="rating-text">
                     REAL REVIEWS FROM CUSTOMERS <br>
                     WHO WEAR 2THSND4 WITH CONFIDENCE.
                 </p>
                 
-                <!-- Profile Images -->
+           
                 <div class="reviewers">
                     <div class="reviewer">
                         <img src="../images/r1.png" alt="Reviewer 1">
@@ -315,14 +300,12 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         </div>
     </section>
     
-    <!-- ============================================
-         FOOTER
-         ============================================ -->
+ 
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
                 
-                <!-- QUICK LINKS -->
+             
                 <div class="footer-col">
                     <h4>QUICK LINKS</h4>
                     <ul>
@@ -333,7 +316,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     </ul>
                 </div>
                 
-                <!-- CUSTOMER SERVICE -->
+                
                 <div class="footer-col">
                     <h4>CUSTOMER SERVICE</h4>
                     <ul>
@@ -345,7 +328,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                     </ul>
                 </div>
                 
-                <!-- FOLLOW US -->
+       
                 <div class="footer-col">
                     <h4>FOLLOW US</h4>
                     <ul>
@@ -357,14 +340,14 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
                 
             </div>
             
-            <!-- COPYRIGHT -->
+          
             <div class="footer-bottom">
                 <p>&copy; 2026 2THSND4. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
     <div class="logout-modal">
         <div class="logout-modal-content">
@@ -379,9 +362,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     </div>
 </div>
     
-    <!-- ============================================
-         JAVASCRIPT
-         ============================================ -->
+ 
     <script src="../script.js"></script>
     
 </body>

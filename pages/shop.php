@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// ===== HANDLE LOGOUT =====
+
 if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     session_unset();
     session_destroy();
@@ -9,7 +9,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     exit();
 }
 
-// ===== GET SEARCH QUERY =====
+
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUGANG NI!
 ?>
 
@@ -27,9 +27,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
 </head>
 <body>
     
-    <!-- ============================================
-         HEADER / NAVIGATION
-         ============================================ -->
+    
     <nav class="navbar">
         <div class="container">
             <div class="nav-logo">
@@ -59,13 +57,12 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                     </button>
                 </div>
                 
-                <!-- ===== DROPDOWN MENU ===== -->
 <div class="dropdown-menu" id="dropdownMenu">
     <ul>
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
         
         <?php if (isset($_SESSION['user'])): ?>
-            <!-- NAAY NAKA-LOGIN -->
+           
             <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
             <li>
                 <a href="#" onclick="showLogoutModal(event)">
@@ -73,7 +70,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                 </a>
             </li>
         <?php else: ?>
-            <!-- WALA NAKA-LOGIN -->
+         
             <li><a href="../login/login.php"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
         <?php endif; ?>
         
@@ -82,7 +79,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
 </div>
     </nav>
     
-    <!-- ===== SHOP PAGE ===== -->
+  
     <section class="shop-page">
         <div class="container">
             <div class="shop-header">
@@ -96,7 +93,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
             
             <div class="shop-grid">
                 <?php
-                // ===== PRODUCTS =====
+            
                 $products = [
                     ['name' => 'White Shirt', 'price' => '₱1,299.00', 'image' => 'tshirts.jpg.png', 'stock' => 5],
                     ['name' => 'Jeans', 'price' => '₱1,899.00', 'image' => 'jeans.png', 'stock' => 5],
@@ -106,7 +103,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                     ['name' => 'Muscle tee', 'price' => '₱899.00', 'image' => 'muscletee.jpg', 'stock' => 5],
                 ];
                 
-                // ===== FILTER PRODUCTS =====
+              
                 $filteredProducts = $products;
                 if ($searchQuery) {
                     $filteredProducts = [];
@@ -117,10 +114,10 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                     }
                 }
                 
-                // ===== DISPLAY =====
+              
                 if (count($filteredProducts) > 0) {
                     foreach ($filteredProducts as $product) {
-                        // Clean price (remove ₱ and commas)
+                     
                         $cleanPrice = str_replace('₱', '', str_replace(',', '', $product['price']));
                         
                         echo '
@@ -154,7 +151,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
         </div>
     </section>
     
-    <!-- ===== FOOTER ===== -->
+   
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -195,7 +192,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
         </div>
     </footer>
 
-    <!-- ===== LOGOUT CONFIRMATION MODAL ===== -->
+
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
     <div class="logout-modal">
         <div class="logout-modal-content">

@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-// Check if user is logged in
+
 if (!isset($_SESSION['user'])) {
-    header('Location: ../login/login.php');  // ← Gi-update
+    header('Location: ../login/login.php');
     exit();
 }
 
-// Check if cart is empty
+
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     header('Location: cart.php');
     exit();
@@ -19,8 +19,24 @@ foreach ($cart as $item) {
     $total += $item['price'] * $item['quantity'];
 }
 
-// Handle order submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    try {
+        $pdo = getConnection();
+        $pdo->beginTransaction();
+        
+        foreach ($_SESSION['cart'] as $item) {
+            if (isset($item['id'])) {
+                $stmt = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
+                $stmt->execute([$item['quantity'], $item['id'], $item['quantity']]);
+            }
+        }
+        
+        $pdo->commit();
+    } catch (Exception $e) {
+      
+    }
+    
     $_SESSION['cart'] = [];
     $orderSuccess = true;
 }
@@ -38,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     
-    <!-- ===== HEADER ===== -->
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-logo">
@@ -71,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </nav>
 
-    <!-- ===== CHECKOUT PAGE ===== -->
+
     <section class="checkout-page">
         <div class="container">
             <div class="checkout-header">
@@ -88,10 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php else: ?>
             
-            <form method="POST" action="checkout.php">
+            <form method="POST" action="checkout.php" class="checkout-form">
                 <div class="checkout-grid">
                     
-                    <!-- LEFT: Order Summary -->
+                
                     <div class="checkout-summary">
                         <h2>Order Summary</h2>
                         <?php foreach ($cart as $item): ?>
@@ -121,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <!-- RIGHT: Shipping Details -->
+                
                     <div class="checkout-details">
                         <h2>Shipping Details</h2>
                         <div class="form-group">
@@ -152,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+  
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">

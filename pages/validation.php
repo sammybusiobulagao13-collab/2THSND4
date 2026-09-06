@@ -1,7 +1,5 @@
 <?php
-// ============================================
-// VALIDATION FUNCTIONS
-// ============================================
+
 
 function validateEmailFormat(string $value): ?string
 {

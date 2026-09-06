@@ -1,8 +1,3 @@
-// ============================================
-// 2THSND4 - COMPLETE FUNCTIONALITY
-// ============================================
-
-// ===== 1. MOBILE MENU TOGGLE =====
 const mobileToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 
@@ -22,7 +17,7 @@ if (mobileToggle && navLinks) {
     });
 }
 
-// ===== 2. NAVBAR - ACTIVE LINK =====
+
 const navLinkItems = document.querySelectorAll('.nav-links a');
 
 function removeActiveClass() {
@@ -47,7 +42,7 @@ navLinkItems.forEach(function(link) {
     });
 });
 
-// ===== 3. AUTO-HIGHLIGHT ON SCROLL =====
+
 const sections = document.querySelectorAll('section[id]');
 
 if (sections.length > 0) {
@@ -73,7 +68,7 @@ if (sections.length > 0) {
     });
 }
 
-// ===== 4. SEARCH DROPDOWN TOGGLE =====
+
 const searchToggle = document.getElementById('searchToggle');
 const searchDropdown = document.getElementById('searchDropdown');
 const searchInput = document.getElementById('searchInput');
@@ -119,23 +114,22 @@ if (searchToggle && searchDropdown) {
     }
 }
 
-// ===== 5. SHOP NOW BUTTON =====
+
 const shopNowBtn = document.querySelector('.hero .btn-primary');
 
 if (shopNowBtn) {
     shopNowBtn.addEventListener('click', function(e) {
-        // Mo-redirect sa shop.php
+
     });
 }
 
-// ===== 6. ADD TO CART FUNCTIONALITY =====
+
 const addToCartBtns = document.querySelectorAll('.btn-add');
 
 addToCartBtns.forEach(function(btn) {
     btn.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Gamit ang closest para ma-kuha ang parent product-card
+     
         const card = this.closest('.product-card');
         
         if (!card) {
@@ -143,7 +137,7 @@ addToCartBtns.forEach(function(btn) {
             return;
         }
         
-        // Kuhaon ang product details
+   
         const productName = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Product';
         const productPrice = card.querySelector('.price') ? card.querySelector('.price').textContent : '0.00';
         const cleanPrice = productPrice.replace(/[₱,]/g, '').trim();
@@ -155,14 +149,14 @@ addToCartBtns.forEach(function(btn) {
             imagePath = src.split('/').pop();
         }
         
-        // I-print sa console para ma-verify
+       
         console.log('Adding to cart:', {
             name: productName,
             price: cleanPrice,
             image: imagePath
         });
         
-        // I-redirect sa cart.php
+    
         const url = 'cart.php?add=1&name=' + encodeURIComponent(productName) + 
                     '&price=' + encodeURIComponent(cleanPrice) + 
                     '&image=' + encodeURIComponent(imagePath) + 
@@ -172,16 +166,15 @@ addToCartBtns.forEach(function(btn) {
     });
 });
 
-// ===== 7. BUY MORE BUTTON =====
+
 const buyMoreBtn = document.querySelector('.buy-more-content .btn-primary');
 
 if (buyMoreBtn) {
     buyMoreBtn.addEventListener('click', function(e) {
-        // Wala nay e.preventDefault();
-        // Mo-redirect na sa shop.php kay naay href ang button
+     
     });
 }
-// ===== 8. GET YOURS NOW BUTTON =====
+
 const getYoursBtn = document.querySelector('.ratings-section .btn-primary');
 
 if (getYoursBtn) {
@@ -194,7 +187,7 @@ if (getYoursBtn) {
     });
 }
 
-// ===== 9. FOOTER LINKS =====
+
 document.querySelectorAll('.footer-col ul li a').forEach(function(link) {
     link.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -205,7 +198,7 @@ document.querySelectorAll('.footer-col ul li a').forEach(function(link) {
     });
 });
 
-// ===== 10. CAROUSEL - AUTO SCROLL =====
+
 const carousel = document.querySelector('.products-carousel');
 
 if (carousel) {
@@ -265,9 +258,7 @@ if (carousel) {
     });
 }
 
-// ============================================
-// DROPDOWN MENU TOGGLE (Para sa ☰)
-// ============================================
+
 const dropdownToggle = document.getElementById('menuToggle');
 const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -303,9 +294,7 @@ if (dropdownToggle && dropdownMenu) {
 
 console.log('✅ 2THSND4 website is fully functional!');
 
-// ============================================
-// LOGOUT CONFIRMATION MODAL
-// ============================================
+
 function showLogoutModal(event) {
     event.preventDefault();
     const modal = document.getElementById('logoutModal');
@@ -321,7 +310,7 @@ function closeLogoutModal() {
     }
 }
 
-// Close modal when clicking outside
+
 document.addEventListener('click', function(event) {
     const modal = document.getElementById('logoutModal');
     if (event.target === modal) {

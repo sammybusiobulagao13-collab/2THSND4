@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-// Initialize cart if not exists
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// ===== ADD TO CART =====
+
 if (isset($_GET['add']) && $_GET['add'] == 1) {
     $product = [
+        'id' => isset($_GET['id']) ? (int)$_GET['id'] : 0,
         'name' => isset($_GET['name']) ? $_GET['name'] : 'Product',
         'price' => isset($_GET['price']) ? (float)$_GET['price'] : 0,
         'image' => isset($_GET['image']) ? $_GET['image'] : 'default.jpg',
@@ -16,10 +16,10 @@ if (isset($_GET['add']) && $_GET['add'] == 1) {
         'stock' => isset($_GET['stock']) ? (int)$_GET['stock'] : 10
     ];
     
-    // Check if product already exists
+
     $found = false;
     foreach ($_SESSION['cart'] as &$item) {
-        if ($item['name'] === $product['name']) {
+        if ($item['id'] === $product['id']) {
             if ($item['quantity'] + $product['quantity'] <= $item['stock']) {
                 $item['quantity'] += $product['quantity'];
             } else {
@@ -38,7 +38,7 @@ if (isset($_GET['add']) && $_GET['add'] == 1) {
     exit();
 }
 
-// ===== REMOVE =====
+
 if (isset($_GET['remove'])) {
     $index = (int)$_GET['remove'];
     if (isset($_SESSION['cart'][$index])) {
@@ -48,28 +48,34 @@ if (isset($_GET['remove'])) {
     exit();
 }
 
-// ===== CLEAR =====
+
 if (isset($_GET['clear'])) {
     $_SESSION['cart'] = [];
     header('Location: cart.php');
     exit();
 }
 
-// ===== UPDATE =====
-if (isset($_POST['update'])) {
-    foreach ($_POST['quantity'] as $index => $qty) {
-        if ($qty > 0 && isset($_SESSION['cart'][$index])) {
-            $stock = isset($_SESSION['cart'][$index]['stock']) ? $_SESSION['cart'][$index]['stock'] : 10;
-            if ($qty <= $stock) {
-                $_SESSION['cart'][$index]['quantity'] = (int)$qty;
-            }
+
+if (isset($_POST['update_quantity'])) {
+    $index = (int)$_POST['index'];
+    $quantity = (int)$_POST['quantity'];
+    
+    if (isset($_SESSION['cart'][$index])) {
+        $stock = isset($_SESSION['cart'][$index]['stock']) ? $_SESSION['cart'][$index]['stock'] : 10;
+        if ($quantity > 0 && $quantity <= $stock) {
+            $_SESSION['cart'][$index]['quantity'] = $quantity;
         }
     }
-    header('Location: cart.php');
+    
+
+    $total = 0;
+    foreach ($_SESSION['cart'] as $item) {
+        $total += $item['price'] * $item['quantity'];
+    }
+    echo json_encode(['success' => true, 'total' => $total]);
     exit();
 }
 
-// ===== GET CART DATA =====
 $cart = $_SESSION['cart'];
 $total = 0;
 foreach ($cart as $item) {
@@ -89,7 +95,7 @@ foreach ($cart as $item) {
 </head>
 <body>
     
-    <!-- ===== HEADER ===== -->
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-logo">
@@ -131,7 +137,7 @@ foreach ($cart as $item) {
         </div>
     </nav>
 
-    <!-- ===== CART PAGE ===== -->
+
     <section class="cart-page">
         <div class="container">
             <div class="cart-header">
@@ -140,7 +146,7 @@ foreach ($cart as $item) {
             </div>
             
             <?php if (count($cart) > 0): ?>
-                <form method="POST" action="cart.php">
+                <form method="POST" action="cart.php" id="cartForm">
                     <div class="cart-table-wrapper">
                         <table class="cart-table">
                             <thead>
@@ -155,14 +161,15 @@ foreach ($cart as $item) {
                             </thead>
                             <tbody>
                                 <?php foreach ($cart as $index => $item): ?>
-                                    <tr>
+                                    <tr data-index="<?php echo $index; ?>">
                                         <td class="cart-product">
                                             <img src="../images/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                             <span><?php echo htmlspecialchars($item['name']); ?></span>
                                         </td>
                                         <td class="cart-price">₱<?php echo number_format($item['price'], 2); ?></td>
                                         <td class="cart-quantity">
-                                            <input type="number" name="quantity[<?php echo $index; ?>]" 
+                                            <input type="number" class="qty-input" 
+                                                   data-index="<?php echo $index; ?>"
                                                    value="<?php echo $item['quantity']; ?>" 
                                                    min="1" 
                                                    max="<?php echo isset($item['stock']) ? $item['stock'] : 10; ?>">
@@ -176,7 +183,7 @@ foreach ($cart as $item) {
                                                 <span style="color: #ff4444; font-size: 12px; margin-left: 5px;">⚠️ Low Stock</span>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="cart-total">₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
+                                        <td class="cart-total item-total">₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
                                         <td class="cart-remove">
                                             <a href="cart.php?remove=<?php echo $index; ?>" class="remove-btn" onclick="return confirm('Remove this item?')">
                                                 <i class="fas fa-times"></i>
@@ -190,7 +197,6 @@ foreach ($cart as $item) {
                     
                     <div class="cart-actions">
                         <a href="shop.php" class="btn btn-secondary">Continue Shopping</a>
-                        <button type="submit" name="update" class="btn btn-primary">Update Cart</button>
                         <a href="cart.php?clear=1" class="btn btn-danger" onclick="return confirm('Clear all items?')">Clear Cart</a>
                     </div>
                     
@@ -199,7 +205,7 @@ foreach ($cart as $item) {
                             <h3>Cart Total</h3>
                             <div class="cart-total-row">
                                 <span>Subtotal:</span>
-                                <span>₱<?php echo number_format($total, 2); ?></span>
+                                <span id="subtotal">₱<?php echo number_format($total, 2); ?></span>
                             </div>
                             <div class="cart-total-row">
                                 <span>Shipping:</span>
@@ -207,7 +213,7 @@ foreach ($cart as $item) {
                             </div>
                             <div class="cart-total-row grand-total">
                                 <span>Total:</span>
-                                <span>₱<?php echo number_format($total, 2); ?></span>
+                                <span id="grandTotal">₱<?php echo number_format($total, 2); ?></span>
                             </div>
                             <a href="checkout.php" class="btn btn-primary checkout-btn">Proceed to Checkout</a>
                         </div>
@@ -224,7 +230,7 @@ foreach ($cart as $item) {
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+   
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -261,6 +267,53 @@ foreach ($cart as $item) {
             </div>
         </div>
     </footer>
+
+    <script>
+ 
+    document.querySelectorAll('.qty-input').forEach(function(input) {
+        input.addEventListener('change', function() {
+            const index = this.dataset.index;
+            const quantity = parseInt(this.value);
+            const maxStock = parseInt(this.max);
+            
+            if (quantity < 1) {
+                this.value = 1;
+                alert('Quantity must be at least 1');
+                return;
+            }
+            
+            if (quantity > maxStock) {
+                this.value = maxStock;
+                alert('Not enough stock! Maximum is ' + maxStock);
+                return;
+            }
+            
+       
+            fetch('cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'update_quantity=1&index=' + index + '&quantity=' + quantity
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update total per item
+                    const row = this.closest('tr');
+                    const price = parseFloat(row.querySelector('.cart-price').textContent.replace(/[₱,]/g, ''));
+                    const itemTotal = row.querySelector('.item-total');
+                    itemTotal.textContent = '₱' + (price * quantity).toFixed(2);
+                    
+               
+                    document.getElementById('subtotal').textContent = '₱' + data.total.toFixed(2);
+                    document.getElementById('grandTotal').textContent = '₱' + data.total.toFixed(2);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+    </script>
     
     <script src="../script.js"></script>
 </body>
