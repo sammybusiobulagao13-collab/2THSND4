@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-
+// Check if user is logged in
 if (!isset($_SESSION['user'])) {
     header('Location: ../login/login.php');
     exit();
 }
 
-
+// Check if cart is empty
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     header('Location: cart.php');
     exit();
@@ -20,25 +20,18 @@ foreach ($cart as $item) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    try {
-        $pdo = getConnection();
-        $pdo->beginTransaction();
-        
-        foreach ($_SESSION['cart'] as $item) {
-            if (isset($item['id'])) {
-                $stmt = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
-                $stmt->execute([$item['quantity'], $item['id'], $item['quantity']]);
-            }
-        }
-        
-        $pdo->commit();
-    } catch (Exception $e) {
-      
-    }
+    // Save order details to session for confirmation page
+    $_SESSION['last_order'] = [
+        'items' => $cart,
+        'total' => $total,
+        'date' => date('Y-m-d H:i:s')
+    ];
     
     $_SESSION['cart'] = [];
-    $orderSuccess = true;
+    
+    // Redirect to confirmation page
+    header('Location: order_confirmation.php');
+    exit();
 }
 ?>
 

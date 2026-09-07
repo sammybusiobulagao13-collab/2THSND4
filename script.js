@@ -248,7 +248,7 @@ if (carousel) {
     });
 }
 
-
+// DROPDOWN MENU
 const dropdownToggle = document.getElementById('menuToggle');
 const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -258,28 +258,38 @@ if (dropdownToggle && dropdownMenu) {
         dropdownMenu.classList.toggle('active');
         
         const icon = this.querySelector('i');
-        if (dropdownMenu.classList.contains('active')) {
-            icon.className = 'fas fa-times';
-        } else {
-            icon.className = 'fas fa-bars';
+        if (icon) {
+            if (dropdownMenu.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
         }
     });
     
     document.addEventListener('click', function(event) {
-        if (!dropdownMenu.contains(event.target) && !dropdownToggle.contains(event.target)) {
-            dropdownMenu.classList.remove('active');
-            const icon = dropdownToggle.querySelector('i');
-            icon.className = 'fas fa-bars';
+        if (dropdownMenu && dropdownToggle) {
+            if (!dropdownMenu.contains(event.target) && !dropdownToggle.contains(event.target)) {
+                dropdownMenu.classList.remove('active');
+                const icon = dropdownToggle.querySelector('i');
+                if (icon) {
+                    icon.className = 'fas fa-bars';
+                }
+            }
         }
     });
     
-    dropdownMenu.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', function() {
-            dropdownMenu.classList.remove('active');
-            const icon = dropdownToggle.querySelector('i');
-            icon.className = 'fas fa-bars';
+    if (dropdownMenu) {
+        dropdownMenu.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                dropdownMenu.classList.remove('active');
+                const icon = dropdownToggle.querySelector('i');
+                if (icon) {
+                    icon.className = 'fas fa-bars';
+                }
+            });
         });
-    });
+    }
 }
 
 console.log('✅ 2THSND4 website is fully functional!');

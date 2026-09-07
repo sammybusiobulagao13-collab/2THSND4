@@ -2569,3 +2569,219 @@ body {
         transform: scale(1);
     }
 }
+
+/*ORDER CONFIRMATION PAGE*/
+
+.order-success {
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.order-success .fa-check-circle {
+    font-size: 80px;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.order-success h2 {
+    font-family: var(--font-primary);
+    font-size: 42px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.order-success .sub-text {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: var(--text-muted);
+    line-height: 1.8;
+}
+
+.order-success .sub-text strong {
+    color: var(--text-light);
+}
+
+.order-success .info-text {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* Order Box */
+.order-box {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 500px;
+    margin: 0 auto 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.order-box .label {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.order-box .order-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 2px;
+}
+
+.order-box .order-date {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Order Summary */
+.order-summary {
+    max-width: 500px;
+    margin: 0 auto 30px;
+    text-align: left;
+}
+
+.order-summary h4 {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    font-family: var(--font-primary);
+}
+
+.order-summary .item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.order-summary .item-name {
+    color: var(--text-light);
+    font-family: Arial, sans-serif;
+}
+
+.order-summary .item-price {
+    color: var(--primary-color);
+    font-family: Arial, sans-serif;
+}
+
+.order-summary .total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+}
+
+.order-summary .total-label {
+    font-weight: 700;
+    color: var(--text-light);
+    font-family: Arial, sans-serif;
+}
+
+.order-summary .total-amount {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Order Actions */
+.order-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.order-actions .btn-primary {
+    display: inline-block;
+    padding: 16px 50px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+.order-actions .btn-primary:hover {
+    background-color: #ffffff;
+    color: #0a0a1a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+.order-actions .btn-secondary {
+    display: inline-block;
+    padding: 16px 50px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: transparent;
+    color: #ffffff;
+}
+
+.order-actions .btn-secondary:hover {
+    border-color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .order-success h2 {
+        font-size: 32px;
+    }
+    
+    .order-success .sub-text {
+        font-size: 16px;
+    }
+    
+    .order-box .order-number {
+        font-size: 20px;
+    }
+    
+    .order-actions .btn-primary,
+    .order-actions .btn-secondary {
+        padding: 14px 30px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .order-success h2 {
+        font-size: 26px;
+    }
+    
+    .order-box {
+        padding: 20px;
+    }
+    
+    .order-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .order-actions .btn-primary,
+    .order-actions .btn-secondary {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+    }
+}
