@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="checkout-page">
         <div class="container">
             <div class="checkout-header">
-                <h1>🛍️ CHECKOUT</h1>
+                <h1>CHECKOUT</h1>
                 <p>Review your order and confirm</p>
             </div>
             

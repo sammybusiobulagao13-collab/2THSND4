@@ -80,7 +80,7 @@ $orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
 <section class="history-page">
     <div class="container">
         <div class="history-header">
-            <h1>📦 MY ORDERS</h1>
+            <h1> MY ORDERS</h1>
             <p>View all your orders and track their status</p>
         </div>
 
@@ -118,9 +118,7 @@ $orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
                                 <span>Total:</span>
                                 <strong>₱<?php echo number_format($order['total'], 2); ?></strong>
                             </div>
-                            <button class="btn btn-secondary btn-sm view-details" onclick="viewOrderDetails('<?php echo $order['id']; ?>')">
-                                View Details
-                            </button>
+                           
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -130,7 +128,7 @@ $orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
                 <i class="fas fa-box fa-4x"></i>
                 <h2>No Orders Yet</h2>
                 <p>You haven't placed any orders yet. Start shopping now!</p>
-                <a href="shop.php" class="btn btn-primary">Start Shopping</a>
+                
             </div>
         <?php endif; ?>
     </div>

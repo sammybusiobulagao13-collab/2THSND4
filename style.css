@@ -2968,3 +2968,19 @@ body {
         font-size: 14px;
     }
 }
+
+/* Logout Success Message */
+.logout-success-message {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.logout-success-message i {
+    margin-right: 10px;
+    font-size: 18px;
+}

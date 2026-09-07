@@ -12,6 +12,11 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
+$logoutMessage = '';
+if (isset($_GET['logout']) && $_GET['logout'] === 'success') {
+    $logoutMessage = 'You have been logged out successfully.';
+}
+
 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
 
 
