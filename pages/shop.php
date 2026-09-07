@@ -1,15 +1,6 @@
 <?php
 session_start();
 
-
-if (isset($_GET['logout']) && $_GET['logout'] == 1) {
-    session_unset();
-    session_destroy();
-    header('Location: shop.php');
-    exit();
-}
-
-
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUGANG NI!
 ?>
 
@@ -157,7 +148,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
             <p>Are you sure you want to log out?</p>
             <div class="logout-modal-actions">
                 <button class="btn btn-secondary" onclick="closeLogoutModal()">Cancel</button>
-                <a href="index.php?logout=1" class="btn btn-primary">Yes</a>
+                <a href="../login/logout.php" class="btn btn-primary">Yes</a>
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@ if (!$order) {
 }
 
 // Clear the order from session para di na ma-access balik
-unset($_SESSION['last_order']);
+//unset($_SESSION['last_order']);
 ?>
 
 <!DOCTYPE html>
