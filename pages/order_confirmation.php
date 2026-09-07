@@ -67,8 +67,11 @@ if (!$order) {
             <!-- DROPDOWN MENU -->
             <div class="dropdown-menu" id="dropdownMenu">
                 <ul>
+
+                 <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
                     <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                    <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
+                    <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
+                   
                 </ul>
             </div>
         </div>
@@ -116,7 +119,7 @@ if (!$order) {
                 <a href="shop.php" class="btn btn-primary">
                     <i class="fas fa-shopping-bag"></i> Continue Shopping
                 </a>
-                <a href="history.php" class="btn btn-secondary">
+                <a href="view_orders.php" class="btn btn-secondary">
                     <i class="fas fa-history"></i> View Orders
                 </a>
             </div>

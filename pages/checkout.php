@@ -20,13 +20,28 @@ foreach ($cart as $item) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Save order details to session for confirmation page
-    $_SESSION['last_order'] = [
+    
+    $orderId = '2TH-' . date('Ymd') . '-' . rand(1000, 9999);
+    
+    // Create order data
+    $orderData = [
+        'id' => $orderId,
         'items' => $cart,
         'total' => $total,
-        'date' => date('Y-m-d H:i:s')
+        'date' => date('Y-m-d H:i:s'),
+        'status' => 'Processing'
     ];
     
+    // Save to session for confirmation page
+    $_SESSION['last_order'] = $orderData;
+    
+    // Save to orders history 
+    if (!isset($_SESSION['orders'])) {
+        $_SESSION['orders'] = [];
+    }
+    $_SESSION['orders'][] = $orderData;
+    
+    // Clear the cart
     $_SESSION['cart'] = [];
     
     // Redirect to confirmation page
@@ -72,8 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="dropdown-menu" id="dropdownMenu">
                     <ul>
+                         <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
                         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                        <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
+                        <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
+                       
                     </ul>
                 </div>
             </div>

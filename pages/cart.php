@@ -148,6 +148,7 @@ foreach ($cart as $item) {
         <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
         
         <?php if (isset($_SESSION['user'])): ?>
+            <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
             <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
             <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         <?php endif; ?>
@@ -159,7 +160,7 @@ foreach ($cart as $item) {
     <section class="cart-page">
         <div class="container">
             <div class="cart-header">
-                <h1>🛒 YOUR CART</h1>
+                <h1>YOUR CART</h1>
                 <p>Review your items before checkout</p>
             </div>
             
