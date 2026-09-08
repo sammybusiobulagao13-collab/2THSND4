@@ -63,7 +63,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
         
         <?php if (isset($_SESSION['user'])): ?>
             <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
-            <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
+          
             <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         <?php endif; ?>
     </ul>

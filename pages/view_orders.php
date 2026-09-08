@@ -1,5 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
+require_once '../database/config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -7,12 +11,31 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$user = $_SESSION['user'];
+$user_id = $_SESSION['user']['id'];
 
-// Get orders from session
-$orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
+// Get orders from DATABASE
+$stmt = $pdo->prepare("
+    SELECT o.*, 
+           (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count
+    FROM orders o
+    WHERE o.user_id = ?
+    ORDER BY o.created_at DESC
+");
+$stmt->execute([$user_id]);
+$orders = $stmt->fetchAll();
+
+// Get order items for each order
+foreach ($orders as &$order) {
+    $stmt = $pdo->prepare("
+        SELECT oi.*, p.name as product_name 
+        FROM order_items oi
+        JOIN products p ON oi.product_id = p.id
+        WHERE oi.order_id = ?
+    ");
+    $stmt->execute([$order['id']]);
+    $order['items'] = $stmt->fetchAll();
+}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,8 +90,8 @@ $orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
                     <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
                     
                     <?php if (isset($_SESSION['user'])): ?>
-                        <li><a href="view-orders.php"><i class="fas fa-box"></i> My Orders</a></li>
-                        <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
+                        <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
+                      
                         <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     <?php endif; ?>
                 </ul>
@@ -80,55 +103,53 @@ $orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
 <section class="history-page">
     <div class="container">
         <div class="history-header">
-            <h1> MY ORDERS</h1>
+            <h1>📦 MY ORDERS</h1>
             <p>View all your orders and track their status</p>
         </div>
 
         <?php if (count($orders) > 0): ?>
-            <div class="orders-container">
-                <?php foreach (array_reverse($orders) as $order): ?>
-                    <div class="order-card">
-                        <div class="order-header">
+            <div class="orders-container" style="max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:20px;">
+                <?php foreach ($orders as $order): ?>
+                    <div class="order-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px 25px;transition:all 0.3s ease;">
+                        <div class="order-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05);">
                             <div class="order-info">
-                                <span class="order-number">Order #<?php echo $order['id']; ?></span>
-                                <span class="order-date">
+                                <span class="order-number" style="font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;">Order #<?php echo $order['order_number']; ?></span>
+                                <span class="order-date" style="font-size:13px;color:#888;">
                                     <i class="far fa-calendar-alt"></i> 
-                                    <?php echo date('F d, Y - h:i A', strtotime($order['date'])); ?>
+                                    <?php echo date('F d, Y - h:i A', strtotime($order['created_at'])); ?>
                                 </span>
                             </div>
                             <div class="order-status">
-                                <span class="status-badge status-<?php echo strtolower($order['status']); ?>">
+                                <span class="status-badge status-<?php echo strtolower($order['status']); ?>" style="padding:4px 16px;border-radius:50px;font-size:13px;font-weight:600;">
                                     <?php echo $order['status']; ?>
                                 </span>
                             </div>
                         </div>
                         
-                        <div class="order-items">
+                        <div class="order-items" style="padding:15px 0;">
                             <?php foreach ($order['items'] as $item): ?>
-                                <div class="order-item">
-                                    <span class="item-name"><?php echo $item['name']; ?></span>
-                                    <span class="item-qty">x<?php echo $item['quantity']; ?></span>
-                                    <span class="item-price">₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                                <div class="order-item" style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:15px;color:#fff;border-bottom:1px solid rgba(255,255,255,0.03);">
+                                    <span class="item-name"><?php echo htmlspecialchars($item['product_name']); ?></span>
+                                    <span class="item-qty" style="color:#888;margin:0 15px;font-size:13px;">x<?php echo $item['quantity']; ?></span>
+                                    <span class="item-price" style="font-weight:600;color:#ffc107;">₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                         
-                        <div class="order-footer">
-                            <div class="order-total">
-                                <span>Total:</span>
-                                <strong>₱<?php echo number_format($order['total'], 2); ?></strong>
+                        <div class="order-footer" style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);">
+                            <div class="order-total" style="font-size:16px;color:#888;">
+                                Total: <strong style="font-size:18px;color:#ffc107;margin-left:10px;">₱<?php echo number_format($order['total'], 2); ?></strong>
                             </div>
-                           
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="empty-history">
-                <i class="fas fa-box fa-4x"></i>
-                <h2>No Orders Yet</h2>
-                <p>You haven't placed any orders yet. Start shopping now!</p>
-                
+            <div class="empty-history" style="text-align:center;padding:80px 20px;">
+                <i class="fas fa-box fa-4x" style="color:#888;margin-bottom:20px;"></i>
+                <h2 style="color:#898989;font-family:var(--font-primary);font-size:30px;margin-bottom:10px;">No Orders Yet</h2>
+                <p style="color:#fff;font-size:16px;margin-bottom:25px;">You haven't placed any orders yet. Start shopping now!</p>
+                <a href="shop.php" class="btn btn-primary" style="display:inline-block;padding:16px 50px;font-family:var(--font-primary);font-weight:700;font-size:14px;letter-spacing:2px;text-decoration:none;border-radius:50px;transition:all 0.3s ease;cursor:pointer;border:2px solid #ffffff;background-color:transparent;color:#ffffff;">Start Shopping</a>
             </div>
         <?php endif; ?>
     </div>
@@ -147,12 +168,17 @@ $orders = isset($_SESSION['orders']) ? $_SESSION['orders'] : [];
     </div>
 </div>
 
-<script src="../script.js"></script>
 <script>
-function viewOrderDetails(orderId) {
-    alert('Order #' + orderId + '\n\nOrder details will be shown here.\n(This feature coming soon!)');
+function showLogoutModal(event) {
+    event.preventDefault();
+    document.getElementById('logoutModal').style.display = 'flex';
+}
+
+function closeLogoutModal() {
+    document.getElementById('logoutModal').style.display = 'none';
 }
 </script>
 
+<script src="../script.js"></script>
 </body>
 </html>

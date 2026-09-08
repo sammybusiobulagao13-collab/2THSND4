@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../database/config.php';  // ← IDUGANG NI
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -22,6 +23,41 @@ foreach ($cart as $item) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $orderId = '2TH-' . date('Ymd') . '-' . rand(1000, 9999);
+    
+    // ===== IDUGANG NI: SAVE TO DATABASE =====
+    $user_id = $_SESSION['user']['id'];
+    $shipping_address = $_POST['address'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $zip_code = $_POST['zip'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    
+    try {
+        $pdo->beginTransaction();
+        
+        // Insert into orders table
+        $stmt = $pdo->prepare("
+            INSERT INTO orders (user_id, order_number, total, status, shipping_address, city, zip_code, phone) 
+            VALUES (?, ?, ?, 'Processing', ?, ?, ?, ?)
+        ");
+        $stmt->execute([$user_id, $orderId, $total, $shipping_address, $city, $zip_code, $phone]);
+        $order_id = $pdo->lastInsertId();
+        
+        // Insert into order_items and update stock
+        $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+        $updateStock = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
+        
+        foreach ($cart as $item) {
+            $stmt->execute([$order_id, $item['id'], $item['quantity'], $item['price']]);
+            $updateStock->execute([$item['quantity'], $item['id'], $item['quantity']]);
+        }
+        
+        $pdo->commit();
+        
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        $error = 'Order failed: ' . $e->getMessage();
+    }
+    // ===== END OF ADDED CODE =====
     
     // Create order data
     $orderData = [
@@ -151,22 +187,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="checkout-details">
                         <h2>Shipping Details</h2>
                         <div class="form-group">
-                            <input type="text" placeholder="Full Name" value="<?php echo $_SESSION['user']['name']; ?>" required>
+                            <input type="text" name="address" placeholder="Shipping Address" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Email Address" value="<?php echo $_SESSION['user']['email']; ?>" required>
+                            <input type="text" name="city" placeholder="City / Municipality" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Phone Number" required>
+                            <input type="text" name="zip" placeholder="ZIP Code" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping Address" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="City / Municipality" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="ZIP Code" required>
+                            <input type="text" name="phone" placeholder="Phone Number" required>
                         </div>
                         <button type="submit" class="btn btn-primary checkout-submit">Place Order</button>
                     </div>

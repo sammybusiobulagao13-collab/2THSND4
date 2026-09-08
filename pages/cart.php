@@ -1,10 +1,32 @@
 <?php
 session_start();
+require_once '../database/config.php';  // ← IDUGANG NI
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
+// ===== IDUGANG NI: UPDATE STOCK FROM DATABASE =====
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $key => $cartItem) {
+        $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
+        $stmt->execute([$cartItem['id']]);
+        $product = $stmt->fetch();
+        
+        if ($product) {
+            $currentStock = $product['stock'];
+            // Update the stock in session cart item
+            $_SESSION['cart'][$key]['stock'] = $currentStock;
+            
+            // If stock is 0 or less, remove from cart
+            if ($currentStock <= 0) {
+                unset($_SESSION['cart'][$key]);
+            }
+        }
+    }
+    $_SESSION['cart'] = array_values($_SESSION['cart']);
+}
+// ===== END OF ADDED CODE =====
 
 if (isset($_GET['add']) && $_GET['add'] == 1) {
     $product = [
@@ -149,7 +171,7 @@ foreach ($cart as $item) {
         
         <?php if (isset($_SESSION['user'])): ?>
             <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
-            <li><a href="history.php"><i class="fas fa-history"></i> History</a></li>
+           
             <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         <?php endif; ?>
     </ul>
@@ -160,7 +182,7 @@ foreach ($cart as $item) {
     <section class="cart-page">
         <div class="container">
             <div class="cart-header">
-                <h1>YOUR CART</h1>
+                <h1>🛒 YOUR CART</h1>
                 <p>Review your items before checkout</p>
             </div>
             
@@ -187,19 +209,39 @@ foreach ($cart as $item) {
                                         </td>
                                         <td class="cart-price">₱<?php echo number_format($item['price'], 2); ?></td>
                                         <td class="cart-quantity">
+                                            <?php 
+                                            // ===== IDUGANG NI: Get updated stock from database =====
+                                            $maxStock = 0;
+                                            $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
+                                            $stmt->execute([$item['id']]);
+                                            $product = $stmt->fetch();
+                                            if ($product) {
+                                                $maxStock = $product['stock'];
+                                            }
+                                            ?>
                                             <input type="number" class="qty-input" 
                                                    data-index="<?php echo $index; ?>"
-                                                   value="<?php echo $item['quantity']; ?>" 
+                                                   data-product-id="<?php echo $item['id']; ?>"
+                                                   value="<?php echo min($item['quantity'], $maxStock); ?>" 
                                                    min="1" 
-                                                   max="<?php echo isset($item['stock']) ? $item['stock'] : 10; ?>">
+                                                   max="<?php echo $maxStock; ?>">
                                         </td>
                                         <td class="cart-stock">
                                             <?php 
-                                            $stock = isset($item['stock']) ? $item['stock'] : 10;
+                                            // ===== IDUGANG NI: Get updated stock from database =====
+                                            $stock = 0;
+                                            $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
+                                            $stmt->execute([$item['id']]);
+                                            $product = $stmt->fetch();
+                                            if ($product) {
+                                                $stock = $product['stock'];
+                                            }
                                             echo $stock; 
                                             ?>
-                                            <?php if ($stock <= 3): ?>
-                                                <span style="color: #ff4444; font-size: 12px; margin-left: 5px;">⚠️ Low Stock</span>
+                                            <?php if ($stock <= 3 && $stock > 0): ?>
+                                                <span style="color: #ffc107; font-size: 12px; margin-left: 5px;">⚠️ Low Stock</span>
+                                            <?php elseif ($stock <= 0): ?>
+                                                <span style="color: #ff4444; font-size: 12px; margin-left: 5px;">❌ Out of Stock</span>
                                             <?php endif; ?>
                                         </td>
                                         <td class="cart-total item-total">₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>

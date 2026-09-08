@@ -1,9 +1,18 @@
 <?php
 session_start();
+require_once '../database/config.php';  // ← IDUGANG NI
 require_once '../pages/validation.php';
 
+// If already logged in, redirect based on user type
 if (isset($_SESSION['user'])) {
     $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
+    
+    // Check if user is admin
+    if (isset($_SESSION['user']['is_admin']) && $_SESSION['user']['is_admin'] == 1) {
+        header('Location: ../admin/index.php');
+        exit();
+    }
+    
     if ($redirect === 'checkout') {
         header('Location: ../pages/checkout.php');
     } else {
@@ -19,23 +28,34 @@ if (isset($_GET['logout']) && $_GET['logout'] === 'success') {
 
 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
 
-
 $loginError = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-  
-    if ($email === 'test@email.com' && $password === 'password') {
+    // Check user in database
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+    
+    if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user'] = [
-            'name' => 'Test User',
-            'email' => $email,
-            'username' => 'testuser'
+            'id' => $user['id'],
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'username' => $user['username'],
+            'is_admin' => $user['is_admin']  // ← Importante!
         ];
-        if ($redirect === 'checkout') {
-            header('Location: ../pages/checkout.php');
+        
+        // Redirect based on user type
+        if ($user['is_admin'] == 1) {
+            header('Location: ../admin/index.php');
         } else {
-            header('Location: ../pages/index.php');
+            if ($redirect === 'checkout') {
+                header('Location: ../pages/checkout.php');
+            } else {
+                header('Location: ../pages/index.php');
+            }
         }
         exit();
     } else {
@@ -55,51 +75,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     
     $errors = [];
     
-   
     $nameError = validateRequired($name, 'Full Name');
     if ($nameError) {
         $errors['name'] = $nameError;
     }
-    
     
     $emailError = validateEmailFormat($email);
     if ($emailError) {
         $errors['email'] = $emailError;
     }
     
-    
     $usernameError = validateUsername($username);
     if ($usernameError) {
         $errors['username'] = $usernameError;
     }
-    
     
     $passwordError = validatePassword($password);
     if ($passwordError) {
         $errors['password'] = $passwordError;
     }
     
-   
     $confirmError = validateConfirmPassword($password, $confirmPassword);
     if ($confirmError) {
         $errors['confirm_password'] = $confirmError;
     }
     
-   
     if (empty($errors)) {
-        $_SESSION['user'] = [
-            'name' => $name,
-            'email' => $email,
-            'username' => $username
-        ];
-        
-        if ($redirect === 'checkout') {
-            header('Location: ../pages/checkout.php');
+        // Check if email already exists
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        if ($stmt->fetch()) {
+            $errors['email'] = 'Email already exists!';
         } else {
-            header('Location: ../pages/index.php');
+            // Hash password
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            
+            // ===== IDUGANG NI: Check if this is the first user (become admin) =====
+            $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+            if ($userCount == 0) {
+                $isAdmin = 1;  // First user = Admin
+            } else {
+                $isAdmin = 0;  // All other users = Regular User
+            }
+            // ===== END OF ADDED CODE =====
+            
+            $stmt = $pdo->prepare("INSERT INTO users (name, email, username, password, is_admin) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $email, $username, $hashedPassword, $isAdmin]);
+            
+            $_SESSION['user'] = [
+                'id' => $pdo->lastInsertId(),
+                'name' => $name,
+                'email' => $email,
+                'username' => $username,
+                'is_admin' => $isAdmin
+            ];
+            
+            if ($isAdmin == 1) {
+                header('Location: ../admin/index.php');
+            } else {
+                if ($redirect === 'checkout') {
+                    header('Location: ../pages/checkout.php');
+                } else {
+                    header('Location: ../pages/index.php');
+                }
+            }
+            exit();
         }
-        exit();
-    } else {
+    }
+    
+    if (!empty($errors)) {
         $registerErrors = $errors;
         $registerData = [
             'name' => $name,
@@ -119,6 +163,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <link rel="icon" type="image/png" href="../images/forwbe.png">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .logout-success-message {
+            background: rgba(40,167,69,0.15);
+            color: #28a745;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(40,167,69,0.2);
+        }
+        .logout-success-message i {
+            margin-right: 10px;
+        }
+        .admin-notice {
+            background: rgba(255,193,7,0.1);
+            color: #ffc107;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid rgba(255,193,7,0.1);
+        }
+        .admin-notice i {
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body>
     
@@ -154,12 +225,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         </div>
     </nav>
 
-    
     <section class="login-page">
         <div class="container">
             <div class="login-wrapper">
                 
-             
+                <?php if ($logoutMessage): ?>
+                    <div class="logout-success-message">
+                        <i class="fas fa-check-circle"></i> <?php echo $logoutMessage; ?>
+                    </div>
+                <?php endif; ?>
+                
+                <?php 
+                $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+                if ($userCount == 0): 
+                ?>
+                    <div class="admin-notice">
+                        <i class="fas fa-info-circle"></i> 
+                        No users yet. The first person to sign up will become the <strong>Admin</strong>!
+                    </div>
+                <?php endif; ?>
+                
                 <div class="login-form-container">
                     <h2>LOGIN</h2>
                     <?php if ($loginError): ?>
@@ -177,7 +262,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     <p class="form-switch">Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
                 </div>
                 
-             
                 <div class="register-form-container" style="display: none;">
                     <h2>SIGN UP</h2>
                     
@@ -224,8 +308,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 registerForm.style.display = 'block';
             }
         }
-
-        
     </script>
     <script src="../script.js"></script>
 </body>
