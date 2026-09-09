@@ -10,7 +10,6 @@ $isLoggedIn = isset($_SESSION['user']);
 $errorMessage = '';
 $showPopup = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
     // Check if user is logged in
     if (!isset($_SESSION['user'])) {
         $_SESSION['contact_error'] = 'Please login or sign up first to send a message.';
@@ -56,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
             exit();
         }
     }
-}
 
 // Check for session messages
 if (isset($_SESSION['contact_success'])) {
@@ -67,6 +65,9 @@ if (isset($_SESSION['contact_success'])) {
 if (isset($_SESSION['contact_error'])) {
     $errorMessage = $_SESSION['contact_error'];
     unset($_SESSION['contact_error']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
 }
 ?>
 
@@ -146,15 +147,15 @@ if (isset($_SESSION['contact_error'])) {
                 
                 <!-- LOGIN NOTICE - IF NOT LOGGED IN -->
                 <?php if (!$isLoggedIn): ?>
-                    <div class="login-notice" style="background:rgba(255,193,7,0.15);color:#ffc107;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(255,193,7,0.2);text-align:center;">
+                    <div class="login-notice">
                         <i class="fas fa-exclamation-triangle"></i> 
-                        Please <a href="../login/login.php?redirect=contact" style="color:#fff;font-weight:bold;text-decoration:underline;">Login</a> or 
-                        <a href="../login/login.php?redirect=contact" style="color:#fff;font-weight:bold;text-decoration:underline;">Sign Up</a> to send us a message.
+                        Please <a href="../login/login.php?redirect=contact">Login</a> or 
+                        <a href="../login/login.php?redirect=contact">Sign Up</a> to send us a message.
                     </div>
                 <?php endif; ?>
                 
                 <?php if ($errorMessage): ?>
-                    <div class="error-message" style="background:rgba(255,68,68,0.15);color:#ff4444;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(255,68,68,0.2);">
+                    <div class="error-message">
                         <i class="fas fa-exclamation-circle"></i> <?php echo $errorMessage; ?>
                     </div>
                 <?php endif; ?>
@@ -195,11 +196,11 @@ if (isset($_SESSION['contact_error'])) {
                         <button type="submit" name="send_message" class="btn btn-primary">Send Message</button>
                     </form>
                 <?php else: ?>
-                    <div style="text-align:center;padding:40px 20px;background:rgba(255,255,255,0.03);border-radius:15px;border:1px solid rgba(255,255,255,0.05);">
-                        <i class="fas fa-lock" style="font-size:50px;color:#888;margin-bottom:15px;"></i>
-                        <h3 style="color:#fff;margin-bottom:10px;">Login Required</h3>
-                        <p style="color:#888;margin-bottom:20px;">Please login or sign up to send us a message.</p>
-                        <a href="../login/login.php?redirect=contact" class="btn btn-primary" style="display:inline-block;padding:12px 40px;">Login / Sign Up</a>
+                    <div class="login-required">
+                        <i class="fas fa-lock"></i>
+                        <h3>Login Required</h3>
+                        <p>Please login or sign up to send us a message.</p>
+                        <a href="../login/login.php?redirect=contact" class="btn btn-primary">Login / Sign Up</a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -212,7 +213,7 @@ if (isset($_SESSION['contact_error'])) {
             <div class="popup-icon">✅</div>
             <h2>Message Sent!</h2>
             <p>Your message has been sent successfully. We'll get back to you soon!</p>
-            <button class="btn btn-primary" onclick="closePopup()" style="display:flex; justify-content:center; width:100%;">OK</button>
+            <button class="btn btn-primary" onclick="closeSuccessPopup()">OK</button>
         </div>
     </div>
 
@@ -222,7 +223,7 @@ if (isset($_SESSION['contact_error'])) {
             <div class="popup-icon">❌</div>
             <h2>Error!</h2>
             <p id="errorMessageText">Something went wrong. Please try again.</p>
-            <button class="btn btn-primary" onclick="closeErrorPopup()" style="display:flex; justify-content:center; width:100%;">OK</button>
+            <button class="btn btn-primary" onclick="closeErrorPopup()">OK</button>
         </div>
     </div>
 
@@ -242,17 +243,47 @@ if (isset($_SESSION['contact_error'])) {
 </div>
 
 <script>
-function closePopup() {
-    document.getElementById('successPopup').style.display = 'none';
+// POPUP FUNCTIONS - MATCHING WITH SCRIPT.JS
+
+function closePopup(popupId) {
+    if (popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup) {
+            popup.style.display = 'none';
+        }
+    } else {
+        // Close both popups if no ID specified
+        const successPopup = document.getElementById('successPopup');
+        const errorPopup = document.getElementById('errorPopup');
+        if (successPopup) successPopup.style.display = 'none';
+        if (errorPopup) errorPopup.style.display = 'none';
+    }
 }
 
 function closeErrorPopup() {
-    document.getElementById('errorPopup').style.display = 'none';
+    closePopup('errorPopup');
+}
+
+function closeSuccessPopup() {
+    closePopup('successPopup');
 }
 
 function showErrorPopup(message) {
-    document.getElementById('errorMessageText').textContent = message;
-    document.getElementById('errorPopup').style.display = 'flex';
+    const popup = document.getElementById('errorPopup');
+    const errorText = document.getElementById('errorMessageText');
+    if (popup && errorText) {
+        errorText.textContent = message || 'Something went wrong. Please try again.';
+        popup.style.display = 'flex';
+    } else {
+        alert(message || 'Something went wrong. Please try again.');
+    }
+}
+
+function showSuccessPopup() {
+    const popup = document.getElementById('successPopup');
+    if (popup) {
+        popup.style.display = 'flex';
+    }
 }
 
 function showLogoutModal(event) {

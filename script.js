@@ -318,67 +318,6 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// ============================================
-// CONTACT FORM - AJAX SUBMISSION WITH POPUP
-// ============================================
-
-const contactForm = document.querySelector('.contact-form');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = this.querySelector('input[name="name"]');
-        const email = this.querySelector('input[name="email"]');
-        const subject = this.querySelector('input[name="subject"]');
-        const message = this.querySelector('textarea[name="message"]');
-        
-        // Validate fields
-        if (!name.value || !email.value || !subject.value || !message.value) {
-            showErrorPopup('Please fill in all fields.');
-            return;
-        }
-        
-        // Create FormData
-        const formData = new FormData(this);
-        
-        // Show loading state
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        // Send AJAX request
-        fetch('contact.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            // Reset button
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            
-            // Check if success (check for success message in response)
-            if (data.includes('contact_success') || data.includes('Message Sent')) {
-                // Show success popup
-                showSuccessPopup();
-                // Reset form
-                contactForm.reset();
-            } else {
-                showErrorPopup('Something went wrong. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            showErrorPopup('Network error. Please try again.');
-        });
-    });
-}
-
 
 // POPUP FUNCTIONS
 function showSuccessPopup() {
@@ -435,3 +374,51 @@ document.addEventListener('keydown', function(e) {
         closePopup('errorPopup');
     }
 });
+
+//CONTACT FORM 
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+      
+        contactForm.onsubmit = null;
+        contactForm.addEventListener('submit', function(e) {
+            return true;
+        });
+    }
+});
+
+const originalClosePopup = window.closePopup;
+window.closePopup = function(popupId) {
+    if (popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup) {
+            popup.style.display = 'none';
+        }
+    } else {
+
+        const successPopup = document.getElementById('successPopup');
+        const errorPopup = document.getElementById('errorPopup');
+        if (successPopup) successPopup.style.display = 'none';
+        if (errorPopup) errorPopup.style.display = 'none';
+    }
+};
+
+const originalShowSuccessPopup = window.showSuccessPopup;
+window.showSuccessPopup = function() {
+    const popup = document.getElementById('successPopup');
+    if (popup) {
+        popup.style.display = 'flex';
+    }
+};
+
+const originalShowErrorPopup = window.showErrorPopup;
+window.showErrorPopup = function(message) {
+    const popup = document.getElementById('errorPopup');
+    const errorText = document.getElementById('errorMessageText');
+    if (popup && errorText) {
+        errorText.textContent = message || 'Something went wrong. Please try again.';
+        popup.style.display = 'flex';
+    } else {
+        alert(message || 'Something went wrong. Please try again.');
+    }
+};

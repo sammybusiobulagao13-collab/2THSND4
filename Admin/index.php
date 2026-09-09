@@ -8,7 +8,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['is_admin'] != 1) {
     exit();
 }
 
-// Get dashboard stats (only from existing tables)
+// Get dashboard stats
 $totalProducts = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
 $totalOrders = $pdo->query("SELECT COUNT(*) FROM orders")->fetchColumn();
 $totalUsers = $pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 0")->fetchColumn();
@@ -102,26 +102,37 @@ $recentOrders = $pdo->query("
         
         /* Content */
         .admin-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 30px;
-            min-height: 100vh;
-            width: calc(100% - 260px);
-        }
-        .admin-content .welcome {
-            margin-bottom: 25px;
-        }
-        .admin-content .welcome h1 {
-            color: #fff;
-            font-size: 28px;
-            font-family: var(--font-primary);
-            letter-spacing: 1px;
-        }
-        .admin-content .welcome p {
-            color: #888;
-            font-size: 15px;
-            margin-top: 5px;
-        }
+    margin-left: 260px;
+    flex: 1;
+    padding: 30px;
+    min-height: 100vh;
+    width: calc(100% - 260px);
+    background-image: url('../images/texture.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Overlay*/
+.admin-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 0;
+}
+
+.admin-content .welcome,
+.admin-content .stats-grid,
+.admin-content .recent-section {
+    position: relative;
+    z-index: 1;
+}
         
         /* Stats Grid */
         .stats-grid {

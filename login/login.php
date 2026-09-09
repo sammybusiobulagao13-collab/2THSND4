@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once '../database/config.php';  // ← IDUGANG NI
+require_once '../database/config.php';
 require_once '../pages/validation.php';
 
-// If already logged in, redirect based on user type
+// If already logged in,redirect based on user type
 if (isset($_SESSION['user'])) {
     $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
     
@@ -110,14 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             // Hash password
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             
-            // ===== IDUGANG NI: Check if this is the first user (become admin) =====
+            //Check if this is the first user (become admin) =====
             $userCount = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
             if ($userCount == 0) {
-                $isAdmin = 1;  // First user = Admin
+                $isAdmin = 1; // First user = Admin
             } else {
-                $isAdmin = 0;  // All other users = Regular User
+                $isAdmin = 0; // All other users
             }
-            // ===== END OF ADDED CODE =====
+        
             
             $stmt = $pdo->prepare("INSERT INTO users (name, email, username, password, is_admin) VALUES (?, ?, ?, ?, ?)");
             $stmt->execute([$name, $email, $username, $hashedPassword, $isAdmin]);
