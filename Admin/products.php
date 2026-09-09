@@ -71,7 +71,7 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id")->fetchAll();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #0a0a1a; }
+        body { font-family: Arial, sans-serif; }
         .admin-container { display: flex; min-height: 100vh; }
         .admin-sidebar { width: 260px; background: #000; padding: 20px; border-right: 1px solid rgba(255,255,255,0.05); min-height: 100vh; position: fixed; height: 100%; overflow-y: auto; z-index: 99; }
         .admin-sidebar .logo { font-size: 24px; font-weight: 700; color: #fff; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; text-align: center; letter-spacing: 2px; }
@@ -149,12 +149,88 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id")->fetchAll();
         .no-data { text-align: center; color: #666; padding: 30px; }
         @media (max-width: 768px) { .admin-sidebar { width: 200px; } .admin-content { margin-left: 200px; padding: 15px; width: calc(100% - 200px); } }
         @media (max-width: 480px) { .admin-sidebar { width: 60px; } .admin-sidebar ul li a span { display: none; } .admin-sidebar ul li a i { margin-right: 0; font-size: 18px; } .admin-content { margin-left: 60px; padding: 10px; width: calc(100% - 60px); } }
+    
+  
+body {
+    background-image: url('../images/texture.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: -1;
+    pointer-events: none;
+}
+.admin-container {
+    position: relative;
+    z-index: 1;
+}
+
+.admin-sidebar {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.table-container {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-content,
+.modal-box {
+    background: rgba(10, 10, 26, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-box input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-box input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #17a2b8;
+    outline: none;
+}
+
+.admin-content h1 {
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.product-image {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+    
     </style>
 </head>
 <body>
     <div class="admin-container">
         <div class="admin-sidebar">
-            <div class="logo">2THSND4</div>
+            <div class="logo">
+    <a href="index.php">
+        <img src="../images/forwbe.png" alt="2THSND4 Logo" style="max-width:150px;height:auto;display:block;margin:0 auto;">
+    </a>
+</div>
             <ul>
                 <li><a href="index.php"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="products.php" class="active"><i class="fas fa-box"></i> <span>Products</span></a></li>

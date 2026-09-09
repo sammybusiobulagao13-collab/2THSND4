@@ -264,13 +264,94 @@ if (isset($_GET['mark_all_read'])) {
             .admin-content { margin-left: 60px; padding: 10px; width: calc(100% - 60px); }
             .stats-grid { grid-template-columns: 1fr; }
         }
+
+body {
+    background-image: url('../images/texture.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+/* Dark overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.admin-container {
+    position: relative;
+    z-index: 1;
+}
+
+.admin-sidebar {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.table-container {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.table-container table tbody tr {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.table-container table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.message-detail {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.message-detail .msg-value.full-message {
+    background: rgba(0, 0, 0, 0.4) !important;
+}
+
+.admin-content h1 {
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.no-data {
+    color: #aaa;
+}
+
+
+
     </style>
 </head>
 <body>
     <div class="admin-container">
         <!-- Sidebar -->
         <div class="admin-sidebar">
-            <div class="logo">2THSND4</div>
+            <div class="logo">
+    <a href="index.php">
+        <img src="../images/forwbe.png" alt="2THSND4 Logo" style="max-width:150px;height:auto;display:block;margin:0 auto;">
+    </a>
+</div>
             <ul>
                 <li><a href="index.php"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="products.php"><i class="fas fa-box"></i> <span>Products</span></a></li>

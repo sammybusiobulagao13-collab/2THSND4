@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once '../database/config.php';  // ← IDUGANG NI
+require_once '../database/config.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// ===== IDUGANG NI: UPDATE STOCK FROM DATABASE =====
+//UPDATE STOCK FROM DATABASE
 if (!empty($_SESSION['cart'])) {
     foreach ($_SESSION['cart'] as $key => $cartItem) {
         $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
@@ -15,10 +15,8 @@ if (!empty($_SESSION['cart'])) {
         
         if ($product) {
             $currentStock = $product['stock'];
-            // Update the stock in session cart item
             $_SESSION['cart'][$key]['stock'] = $currentStock;
-            
-            // If stock is 0 or less, remove from cart
+    
             if ($currentStock <= 0) {
                 unset($_SESSION['cart'][$key]);
             }
@@ -26,7 +24,6 @@ if (!empty($_SESSION['cart'])) {
     }
     $_SESSION['cart'] = array_values($_SESSION['cart']);
 }
-// ===== END OF ADDED CODE =====
 
 if (isset($_GET['add']) && $_GET['add'] == 1) {
     $product = [
@@ -182,7 +179,7 @@ foreach ($cart as $item) {
     <section class="cart-page">
         <div class="container">
             <div class="cart-header">
-                <h1>🛒 YOUR CART</h1>
+                <h1>YOUR CART</h1>
                 <p>Review your items before checkout</p>
             </div>
             
@@ -210,7 +207,7 @@ foreach ($cart as $item) {
                                         <td class="cart-price">₱<?php echo number_format($item['price'], 2); ?></td>
                                         <td class="cart-quantity">
                                             <?php 
-                                            // ===== IDUGANG NI: Get updated stock from database =====
+                                            //Get updated stock from database
                                             $maxStock = 0;
                                             $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
                                             $stmt->execute([$item['id']]);
@@ -228,7 +225,7 @@ foreach ($cart as $item) {
                                         </td>
                                         <td class="cart-stock">
                                             <?php 
-                                            // ===== IDUGANG NI: Get updated stock from database =====
+                                            //Get updated stock from database
                                             $stock = 0;
                                             $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
                                             $stmt->execute([$item['id']]);

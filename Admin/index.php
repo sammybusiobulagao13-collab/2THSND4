@@ -245,15 +245,37 @@ $recentOrders = $pdo->query("
             .admin-sidebar ul li a i { margin-right: 0; font-size: 18px; }
             .admin-content { margin-left: 60px; padding: 10px; width: calc(100% - 60px); }
             .stats-grid { grid-template-columns: 1fr; }
-            .admin-content .welcome h1 { font-size: 20px; }
         }
+
+.admin-content .welcome {
+    margin-bottom: 30px;
+    padding-top: 5px;
+}
+
+.admin-content .welcome h1 {
+    font-size: 30px;
+    color: #fff;
+    margin-bottom: 8px;
+    font-family: var(--font-primary);
+}
+
+.admin-content .welcome p {
+    color: #888;
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
     </style>
 </head>
 <body>
     <div class="admin-container">
         <!-- Sidebar -->
         <div class="admin-sidebar">
-            <div class="logo">2THSND4</div>
+            <div class="logo">
+    <a href="index.php">
+        <img src="../images/forwbe.png" alt="2THSND4 Logo" style="max-width:150px;height:auto;display:block;margin:0 auto;">
+    </a>
+</div>
             <ul>
                 <li><a href="index.php" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="products.php"><i class="fas fa-box"></i> <span>Products</span></a></li>
