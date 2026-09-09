@@ -55,6 +55,9 @@ if (isset($_GET['add_stock'])) {
     exit();
 }
 
+// Get unread messages count for badge
+$unreadMessages = $pdo->query("SELECT COUNT(*) FROM messages WHERE status = 'unread'")->fetchColumn();
+
 $products = $pdo->query("SELECT * FROM products ORDER BY id")->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -156,12 +159,18 @@ $products = $pdo->query("SELECT * FROM products ORDER BY id")->fetchAll();
                 <li><a href="index.php"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="products.php" class="active"><i class="fas fa-box"></i> <span>Products</span></a></li>
                 <li><a href="orders.php"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                <li><a href="messages.php"><i class="fas fa-envelope"></i> <span>Messages</span>
+                    <?php if ($unreadMessages > 0): ?>
+                        <span style="background:#ff4444;color:#fff;border-radius:50%;padding:2px 8px;font-size:11px;margin-left:5px;"><?php echo $unreadMessages; ?></span>
+                    <?php endif; ?>
+                </a></li>
                 <li><a href="users.php"><i class="fas fa-users"></i> <span>Users</span></a></li>
                 <li class="logout-link"><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+            </ul>
         </div>
         
         <div class="admin-content">
-            <h1>📦 Products</h1>
+            <h1>Products</h1>
             <div class="header-actions">
                 <button class="btn-add" onclick="openModal()">+ Add Product</button>
             </div>
@@ -362,7 +371,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 </script>
-
 
 </body>
 </html>

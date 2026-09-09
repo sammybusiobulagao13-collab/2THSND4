@@ -1,7 +1,73 @@
 <?php
 session_start();
+require_once '../database/config.php';
 
-$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUGANG NI!
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['user']);
+
+$errorMessage = '';
+$showPopup = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
+    // Check if user is logged in
+    if (!isset($_SESSION['user'])) {
+        $_SESSION['contact_error'] = 'Please login or sign up first to send a message.';
+        header('Location: contact.php');
+        exit();
+    }
+    
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $subject = trim($_POST['subject'] ?? '');
+    $message = trim($_POST['message'] ?? '');
+    
+    $errors = [];
+    
+    if (empty($name)) {
+        $errors['name'] = 'Name is required.';
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Valid email is required.';
+    }
+    if (empty($subject)) {
+        $errors['subject'] = 'Subject is required.';
+    }
+    if (empty($message)) {
+        $errors['message'] = 'Message is required.';
+    }
+    
+    if (empty($errors)) {
+        try {
+            $stmt = $pdo->prepare("
+                INSERT INTO messages (name, email, subject, message, status, created_at) 
+                VALUES (?, ?, ?, ?, 'unread', NOW())
+            ");
+            $stmt->execute([$name, $email, $subject, $message]);
+            
+            $_SESSION['contact_success'] = true;
+            header('Location: contact.php');
+            exit();
+            
+        } catch (PDOException $e) {
+            $_SESSION['contact_error'] = 'Something went wrong. Please try again.';
+            header('Location: contact.php');
+            exit();
+        }
+    }
+}
+
+// Check for session messages
+if (isset($_SESSION['contact_success'])) {
+    $showPopup = true;
+    unset($_SESSION['contact_success']);
+}
+
+if (isset($_SESSION['contact_error'])) {
+    $errorMessage = $_SESSION['contact_error'];
+    unset($_SESSION['contact_error']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +144,21 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                 <h1>CONTACT US</h1>
                 <p class="contact-subtitle">We'd love to hear from you! Reach out to us with any questions or feedback.</p>
                 
+                <!-- LOGIN NOTICE - IF NOT LOGGED IN -->
+                <?php if (!$isLoggedIn): ?>
+                    <div class="login-notice" style="background:rgba(255,193,7,0.15);color:#ffc107;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(255,193,7,0.2);text-align:center;">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Please <a href="../login/login.php?redirect=contact" style="color:#fff;font-weight:bold;text-decoration:underline;">Login</a> or 
+                        <a href="../login/login.php?redirect=contact" style="color:#fff;font-weight:bold;text-decoration:underline;">Sign Up</a> to send us a message.
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ($errorMessage): ?>
+                    <div class="error-message" style="background:rgba(255,68,68,0.15);color:#ff4444;padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(255,68,68,0.2);">
+                        <i class="fas fa-exclamation-circle"></i> <?php echo $errorMessage; ?>
+                    </div>
+                <?php endif; ?>
+                
                 <div class="contact-info">
                     <div class="contact-item">
                         <span class="contact-icon">📧</span>
@@ -96,31 +177,52 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
                     </div>
                 </div>
                 
-               <form class="contact-form" onsubmit="submitContactForm(event)">
-                    <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
+                <!-- SHOW FORM ONLY IF LOGGED IN -->
+                <?php if ($isLoggedIn): ?>
+                    <form class="contact-form" method="POST" action="" id="contactForm">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" value="<?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : ''; ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" value="<?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : ''; ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" name="send_message" class="btn btn-primary">Send Message</button>
+                    </form>
+                <?php else: ?>
+                    <div style="text-align:center;padding:40px 20px;background:rgba(255,255,255,0.03);border-radius:15px;border:1px solid rgba(255,255,255,0.05);">
+                        <i class="fas fa-lock" style="font-size:50px;color:#888;margin-bottom:15px;"></i>
+                        <h3 style="color:#fff;margin-bottom:10px;">Login Required</h3>
+                        <p style="color:#888;margin-bottom:20px;">Please login or sign up to send us a message.</p>
+                        <a href="../login/login.php?redirect=contact" class="btn btn-primary" style="display:inline-block;padding:12px 40px;">Login / Sign Up</a>
                     </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Subject" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea placeholder="Your Message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
-    <div class="popup-overlay" id="successPopup" style="display: none;">
+    <!-- SUCCESS POPUP -->
+    <div class="popup-overlay" id="successPopup" style="<?php echo $showPopup ? 'display: flex;' : 'display: none;'; ?>">
         <div class="popup-content">
             <div class="popup-icon">✅</div>
             <h2>Message Sent!</h2>
             <p>Your message has been sent successfully. We'll get back to you soon!</p>
-            <button class="btn btn-primary" onclick="closePopup()">OK</button>
+            <button class="btn btn-primary" onclick="closePopup()" style="display:flex; justify-content:center; width:100%;">OK</button>
+        </div>
+    </div>
+
+    <!-- ERROR POPUP -->
+    <div class="popup-overlay" id="errorPopup" style="display: none;">
+        <div class="popup-content">
+            <div class="popup-icon">❌</div>
+            <h2>Error!</h2>
+            <p id="errorMessageText">Something went wrong. Please try again.</p>
+            <button class="btn btn-primary" onclick="closeErrorPopup()" style="display:flex; justify-content:center; width:100%;">OK</button>
         </div>
     </div>
 
@@ -140,31 +242,55 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';  // ← IDUG
 </div>
 
 <script>
-function submitContactForm(event) {
-    event.preventDefault();
-    
-    try {
-        const name = document.querySelector('.contact-form input[type="text"]');
-        const email = document.querySelector('.contact-form input[type="email"]');
-        const subject = document.querySelector('.contact-form input[placeholder="Subject"]');
-        const message = document.querySelector('.contact-form textarea');
-        
-        if (!name.value || !email.value || !subject.value || !message.value) {
-            alert('Please fill in all fields.');
-            return;
-        }
-        
-        document.getElementById('successPopup').style.display = 'flex';
-        document.querySelector('.contact-form').reset();
-    } catch (error) {
-        console.log('Error:', error);
-        alert('Something went wrong. Please try again.');
-    }
-}
-
 function closePopup() {
     document.getElementById('successPopup').style.display = 'none';
 }
+
+function closeErrorPopup() {
+    document.getElementById('errorPopup').style.display = 'none';
+}
+
+function showErrorPopup(message) {
+    document.getElementById('errorMessageText').textContent = message;
+    document.getElementById('errorPopup').style.display = 'flex';
+}
+
+function showLogoutModal(event) {
+    event.preventDefault();
+    document.getElementById('logoutModal').style.display = 'flex';
+}
+
+function closeLogoutModal() {
+    document.getElementById('logoutModal').style.display = 'none';
+}
+
+// Close modals on background click
+document.getElementById('successPopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePopup();
+    }
+});
+
+document.getElementById('errorPopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeErrorPopup();
+    }
+});
+
+document.getElementById('logoutModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeLogoutModal();
+    }
+});
+
+// Close with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePopup();
+        closeErrorPopup();
+        closeLogoutModal();
+    }
+});
 
 console.log('Contact page script loaded!');
 </script>

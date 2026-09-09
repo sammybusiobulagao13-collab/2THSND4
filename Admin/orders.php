@@ -49,7 +49,10 @@ $processingOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Pro
 $approvedOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Approved'")->fetchColumn();
 $shippedOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Shipped'")->fetchColumn();
 $deliveredOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Delivered'")->fetchColumn();
-$cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Cancelled'")->fetchColumn(); // ← IDUGANG NI
+$cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Cancelled'")->fetchColumn();
+
+// Get unread messages count for badge
+$unreadMessages = $pdo->query("SELECT COUNT(*) FROM messages WHERE status = 'unread'")->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +80,7 @@ $cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Canc
         .admin-content { margin-left: 260px; flex: 1; padding: 30px; min-height: 100vh; width: calc(100% - 260px); }
         .admin-content h1 { color: #fff; font-family: var(--font-primary); margin-bottom: 20px; }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 25px; }  /* ← I-USAB (gikan 5 nahimong 6) */
+        .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 25px; }
         .stat-card { background: rgba(255,255,255,0.03); padding: 15px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
         .stat-card .number { font-size: 26px; font-weight: 700; color: #fff; }
         .stat-card .label { color: #888; font-size: 13px; margin-top: 5px; }
@@ -120,7 +123,6 @@ $cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Canc
         .btn-deliver { padding: 4px 12px; border-radius: 4px; border: 1px solid rgba(40,167,69,0.3); background: transparent; color: #28a745; cursor: pointer; font-size: 11px; transition: all 0.3s; }
         .btn-deliver:hover { background: rgba(40,167,69,0.1); border-color: #28a745; }
         
-        /* ← IDUGANG NI: Cancel Button Style */
         .btn-cancel { padding: 4px 12px; border-radius: 4px; border: 1px solid rgba(220,53,69,0.3); background: transparent; color: #dc3545; cursor: pointer; font-size: 11px; transition: all 0.3s; }
         .btn-cancel:hover { background: rgba(220,53,69,0.1); border-color: #dc3545; }
         
@@ -141,13 +143,18 @@ $cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Canc
                 <li><a href="index.php"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="products.php"><i class="fas fa-box"></i> <span>Products</span></a></li>
                 <li><a href="orders.php" class="active"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                <li><a href="messages.php"><i class="fas fa-envelope"></i> <span>Messages</span>
+                    <?php if ($unreadMessages > 0): ?>
+                        <span style="background:#ff4444;color:#fff;border-radius:50%;padding:2px 8px;font-size:11px;margin-left:5px;"><?php echo $unreadMessages; ?></span>
+                    <?php endif; ?>
+                </a></li>
                 <li><a href="users.php"><i class="fas fa-users"></i> <span>Users</span></a></li>
-                 <li class="logout-link"><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+                <li class="logout-link"><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
         </div>
         
         <div class="admin-content">
-            <h1>🛒 Orders</h1>
+            <h1>Orders</h1>
             
             <!-- Stats -->
             <div class="stats-grid">
@@ -172,7 +179,7 @@ $cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Canc
                     <div class="label">Delivered</div>
                 </div>
                 <div class="stat-card red">
-                    <div class="number"><?php echo $cancelledOrders; ?></div>  <!-- ← IDUGANG NI -->
+                    <div class="number"><?php echo $cancelledOrders; ?></div>
                     <div class="label">Cancelled</div>
                 </div>
             </div>
@@ -206,12 +213,6 @@ $cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Canc
                             ");
                             $stmt->execute([$order['id']]);
                             $items = $stmt->fetchAll();
-                            
-                            // Calculate total quantity
-                            $totalQty = 0;
-                            foreach ($items as $item) {
-                                $totalQty += $item['quantity'];
-                            }
                             ?>
                             <tr>
                                 <td style="font-size:13px;font-weight:600;"><?php echo $order['order_number']; ?></td>
@@ -338,7 +339,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 </script>
-
 
 </body>
 </html>

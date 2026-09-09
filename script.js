@@ -317,3 +317,121 @@ document.addEventListener('click', function(event) {
         modal.style.display = 'none';
     }
 });
+
+// ============================================
+// CONTACT FORM - AJAX SUBMISSION WITH POPUP
+// ============================================
+
+const contactForm = document.querySelector('.contact-form');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const name = this.querySelector('input[name="name"]');
+        const email = this.querySelector('input[name="email"]');
+        const subject = this.querySelector('input[name="subject"]');
+        const message = this.querySelector('textarea[name="message"]');
+        
+        // Validate fields
+        if (!name.value || !email.value || !subject.value || !message.value) {
+            showErrorPopup('Please fill in all fields.');
+            return;
+        }
+        
+        // Create FormData
+        const formData = new FormData(this);
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        // Send AJAX request
+        fetch('contact.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Reset button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            
+            // Check if success (check for success message in response)
+            if (data.includes('contact_success') || data.includes('Message Sent')) {
+                // Show success popup
+                showSuccessPopup();
+                // Reset form
+                contactForm.reset();
+            } else {
+                showErrorPopup('Something went wrong. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            showErrorPopup('Network error. Please try again.');
+        });
+    });
+}
+
+
+// POPUP FUNCTIONS
+function showSuccessPopup() {
+    const popup = document.getElementById('successPopup');
+    if (popup) {
+        popup.style.display = 'flex';
+    }
+}
+
+function showErrorPopup(message) {
+    const popup = document.getElementById('errorPopup');
+    const errorText = document.getElementById('errorMessageText');
+    if (popup && errorText) {
+        errorText.textContent = message || 'Something went wrong. Please try again.';
+        popup.style.display = 'flex';
+    } else {
+        // Fallback if error popup doesn't exist
+        alert(message || 'Something went wrong. Please try again.');
+    }
+}
+
+function closePopup(popupId) {
+    const popup = document.getElementById(popupId);
+    if (popup) {
+        popup.style.display = 'none';
+    }
+}
+
+function closeSuccessPopup() {
+    closePopup('successPopup');
+}
+
+function closeErrorPopup() {
+    closePopup('errorPopup');
+}
+
+// Close popups on background click
+document.addEventListener('click', function(event) {
+    const successPopup = document.getElementById('successPopup');
+    const errorPopup = document.getElementById('errorPopup');
+    
+    if (successPopup && event.target === successPopup) {
+        successPopup.style.display = 'none';
+    }
+    if (errorPopup && event.target === errorPopup) {
+        errorPopup.style.display = 'none';
+    }
+});
+
+// Close popups with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePopup('successPopup');
+        closePopup('errorPopup');
+    }
+});
