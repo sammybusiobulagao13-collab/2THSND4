@@ -24,7 +24,8 @@ $totalCustomers = $pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 0")->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users - Admin</title>
+    <title>2THSND4 - Admin (Users)</title>
+    <link rel="icon" type="image/png" href="../images/forwbe.png">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -235,7 +236,7 @@ $totalCustomers = $pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 0")->
                 <li><a href="products.php"><i class="fas fa-box"></i> <span>Products</span></a></li>
                 <li><a href="orders.php"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
                 <li><a href="users.php" class="active"><i class="fas fa-users"></i> <span>Users</span></a></li>
-                <li class="logout-link"><a href="../login/logout.php"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+               <li class="logout-link"><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
         </div>
         
@@ -312,5 +313,45 @@ $totalCustomers = $pdo->query("SELECT COUNT(*) FROM users WHERE is_admin = 0")->
             </div>
         </div>
     </div>
+
+<!-- LOGOUT MODAL -->
+<div class="logout-modal-overlay" id="logoutModal" style="display: none;">
+    <div class="logout-modal">
+        <div class="logout-modal-content">
+            <p>Are you sure you want to log out?</p>
+            <div class="logout-modal-actions">
+                <button class="btn btn-secondary" onclick="closeLogoutModal()">Cancel</button>
+                <a href="../login/logout.php" class="btn btn-primary">Yes, Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showLogoutModal(event) {
+    event.preventDefault();
+    document.getElementById('logoutModal').style.display = 'flex';
+}
+
+function closeLogoutModal() {
+    document.getElementById('logoutModal').style.display = 'none';
+}
+
+// Close modal on background click
+document.getElementById('logoutModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeLogoutModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeLogoutModal();
+    }
+});
+</script>
+
+
 </body>
 </html>

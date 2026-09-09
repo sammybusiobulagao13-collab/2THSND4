@@ -103,7 +103,7 @@ foreach ($orders as &$order) {
 <section class="history-page">
     <div class="container">
         <div class="history-header">
-            <h1>📦 MY ORDERS</h1>
+            <h1>MY ORDERS</h1>
             <p>View all your orders and track their status</p>
         </div>
 
