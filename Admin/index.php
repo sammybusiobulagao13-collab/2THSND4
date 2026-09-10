@@ -2,12 +2,15 @@
 session_start();
 require_once '../database/config.php';
 
-// Check if user is logged in AND is admin
-if (!isset($_SESSION['user']) || $_SESSION['user']['is_admin'] != 1) {
+if (!isset($_SESSION['user'])) {
     header('Location: ../login/login.php');
     exit();
 }
 
+if ($_SESSION['user']['is_admin'] != 1) {
+    header('Location: ../pages/index.php');
+    exit();
+}
 // Get dashboard stats
 $totalProducts = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
 $totalOrders = $pdo->query("SELECT COUNT(*) FROM orders")->fetchColumn();
