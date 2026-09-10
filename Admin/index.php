@@ -293,7 +293,7 @@ $recentOrders = $pdo->query("
         <!-- Content -->
         <div class="admin-content">
             <div class="welcome">
-                <h1>👋 Welcome back, Admin!</h1>
+                <h1>Welcome back, Admin!</h1>
                 <p>Here's what's happening with your store today.</p>
             </div>
             

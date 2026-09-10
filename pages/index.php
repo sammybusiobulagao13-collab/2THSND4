@@ -1,11 +1,11 @@
 <?php
 session_start();
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2THSND4 - Home</title>
@@ -174,8 +174,6 @@ session_start();
 </section>   
 
 
-    
-   
     <section class="buy-more-section">
         <div class="container">
             <div class="buy-more-wrapper">
