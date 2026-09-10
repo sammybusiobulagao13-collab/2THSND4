@@ -422,3 +422,50 @@ window.showErrorPopup = function(message) {
         alert(message || 'Something went wrong. Please try again.');
     }
 };
+
+// CAROUSEL NAVIGATION 
+
+function scrollCarousel(direction) {
+    const carousel = document.getElementById('productsCarousel');
+    if (!carousel) return;
+    
+    const cardWidth = 380;
+    const scrollAmount = cardWidth;
+    
+    carousel.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.getElementById('productsCarousel');
+    const prevBtn = document.querySelector('.carousel-btn.prev');
+    const nextBtn = document.querySelector('.carousel-btn.next');
+    
+    if (carousel && prevBtn && nextBtn) {
+        function updateButtons() {
+            const scrollLeft = carousel.scrollLeft;
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            
+            if (scrollLeft <= 0) {
+                prevBtn.style.opacity = '0.3';
+                prevBtn.style.pointerEvents = 'none';
+            } else {
+                prevBtn.style.opacity = '1';
+                prevBtn.style.pointerEvents = 'auto';
+            }
+            
+            if (scrollLeft >= maxScroll - 5) {
+                nextBtn.style.opacity = '0.3';
+                nextBtn.style.pointerEvents = 'none';
+            } else {
+                nextBtn.style.opacity = '1';
+                nextBtn.style.pointerEvents = 'auto';
+            }
+        }
+        
+        carousel.addEventListener('scroll', updateButtons);
+        updateButtons();
+    }
+});

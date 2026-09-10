@@ -135,7 +135,11 @@ if (isset($_SESSION['user']) && $_SESSION['user']['is_admin'] == 1) {
         </div>
         
         <div class="carousel-wrapper">
-            <div class="products-carousel" id="productsCarousel">
+    <button class="carousel-btn prev" onclick="scrollCarousel(-1)">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    
+    <div class="products-carousel" id="productsCarousel">
                 
                 <?php
                 //FEATURED PRODUCTS
@@ -173,6 +177,11 @@ if (isset($_SESSION['user']) && $_SESSION['user']['is_admin'] == 1) {
                 <?php endforeach; ?>
                 
             </div>
+
+<button class="carousel-btn next" onclick="scrollCarousel(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
         </div>
     </div>
 </section>   

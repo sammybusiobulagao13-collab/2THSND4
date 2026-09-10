@@ -129,7 +129,7 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                 } else {
                     echo '
                     <div class="no-results">
-                        <p>😕 No products found for <strong>"' . htmlspecialchars($searchQuery) . '"</strong></p>
+                        <p>No products found for <strong>"' . htmlspecialchars($searchQuery) . '"</strong></p>
                         <p>Try searching for: <span class="suggestions">shirt, Jeans, Caps, Hoody, Jorts</span></p>
                         <a href="shop.php" class="btn btn-primary">View All Products</a>
                     </div>
