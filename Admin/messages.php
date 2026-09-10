@@ -368,7 +368,7 @@ body::before {
         
         <!-- Content -->
         <div class="admin-content">
-            <h1>📩 Messages</h1>
+            <h1>Messages</h1>
             
             <div class="stats-grid">
                 <div class="stat-card blue">
