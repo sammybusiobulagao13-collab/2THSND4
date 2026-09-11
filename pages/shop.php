@@ -75,7 +75,9 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                 <?php if ($searchQuery): ?>
                     <p>Showing results for: <strong>"<?php echo htmlspecialchars($searchQuery); ?>"</strong></p>
                 <?php else: ?>
-                    <p>Discover all our fashion pieces</p>
+                    <div class="shop-header-image">
+            <img src="../images/fashion.png" alt="Discover our fashion pieces">
+        </div>
                 <?php endif; ?>
             </div>
             
@@ -137,6 +139,10 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
                 }
                 ?>
             </div>
+            <!-- COMING SOON TEXT -->
+<div class="coming-soon-container">
+    <p class="coming-soon-text">More products coming soon...</p>
+</div>
         </div>
     </section>
     
