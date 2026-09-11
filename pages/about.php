@@ -70,12 +70,17 @@ $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 <section class="about-page">
     <div class="container">
         <div class="about-page-content">
-            <h1>ABOUT US</h1>
-            
-            <div class="about-description">
-                <p>To elevate the 2THSND4 brand into a globally recognized streetwear staple, while continuously refining our design skills and pushing creative boundaries. We are committed to sharing our art with the world, delivering maximum comfort to everyday wearers, and empowering individuals to express their confidence and unique identity through bold apparel.</p>
-                <p>2THSND4 was born from the idea that everyone deserves to feel confident in what they wear. We combine premium quality fabrics with modern designs to create outfits that make you stand out.</p>
-            </div>
+    <div class="about-hero">
+    <img src="../images/about.png" alt="2THSND4 Team" class="about-hero-image">
+    <div class="about-hero-overlay"></div>
+    <div class="about-hero-text">
+        <h1>ABOUT US</h1>
+        <div class="about-description">
+            <p>To elevate the 2THSND4 brand into a globally recognized streetwear staple, while continuously refining our design skills and pushing creative boundaries. We are committed to sharing our art with the world, delivering maximum comfort to everyday wearers, and empowering individuals to express their confidence and unique identity through bold apparel.</p>
+            <p>2THSND4 was born from the idea that everyone deserves to feel confident in what they wear. We combine premium quality fabrics with modern designs to create outfits that make you stand out.</p>
+        </div>
+    </div>
+</div>
             
             <div class="about-features">
                 <div class="about-feature">

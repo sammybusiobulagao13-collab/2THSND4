@@ -851,12 +851,6 @@ body {
     margin-bottom: 10px;
 }
 
-.shop-header p {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    color: var(--text-muted);
-}
-
 /* Shop Grid */
 .shop-grid {
     display: grid;
@@ -3023,9 +3017,7 @@ body {
     min-width: 0;  
 }
 
-/* ==========================================
-   SHOP HEADER IMAGE - IDUGANG RA
-   ========================================== */
+/*SHOP HEADER IMAGE - IDUGANG RA */
 
 .shop-header-image {
     display: flex;
@@ -3033,15 +3025,15 @@ body {
     align-items: center;
     margin-top: 20px;
     width: 100%;
-    max-width: 1600px;   /* ← Gipadak-an gikan sa default */
+    max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .shop-header-image img {
-    width: 100%;          /* ← Full width */
+    width: 100%; 
     height: auto;
-    max-height: 600px;    /* ← Gipadak-an ang max height */
+    max-height: 600px;    
     object-fit: cover;
     border-radius: 15px;
     display: block;
@@ -3116,5 +3108,104 @@ body {
     .coming-soon-text {
         font-size: 16px;
         letter-spacing: 1px;
+    }
+}
+
+/*ABOUT HERO - TEXT OVERLAY SA IMAGE*/
+
+.about-hero {
+    position: relative;
+    width: 100%;
+    max-width: 2000px;
+    margin: 0 auto 60px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.about-hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.about-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.about-hero-text {
+    position: relative;
+    z-index: 2;
+    padding: 60px;
+    max-width: 800px;
+    text-align: left;
+}
+
+.about-hero-text h1 {
+    font-family: var(--font-primary);
+    font-size: 48px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+.about-hero-text .about-description p {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .about-hero {
+        min-height: 400px;
+    }
+    
+    .about-hero-text {
+        padding: 40px 30px;
+    }
+    
+    .about-hero-text h1 {
+        font-size: 32px;
+    }
+    
+    .about-hero-text .about-description p {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .about-hero {
+        min-height: 350px;
+    }
+    
+    .about-hero-text {
+        padding: 30px 20px;
+    }
+    
+    .about-hero-text h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+    
+    .about-hero-text .about-description p {
+        font-size: 14px;
     }
 }
