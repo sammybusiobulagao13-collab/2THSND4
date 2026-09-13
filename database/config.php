@@ -1,7 +1,7 @@
 <?php
 
 $host = 'localhost:3307';
-$dbname = '2thsnd4_db';
+$dbname = '2thsnd4_db_new';
 $username = 'root';
 $password = '';
 

@@ -136,13 +136,15 @@ addToCartBtns.forEach(function(btn) {
         const productPrice = this.dataset.price;
         const productImage = this.dataset.image;
         const productStock = this.dataset.stock;
+        const productSizes = this.dataset.sizes || 'S,M,L,XL,XXL';
         
         console.log('Adding to cart:', {
             id: productId,
             name: productName,
             price: productPrice,
             image: productImage,
-            stock: productStock
+            stock: productStock,
+            sizes: productSizes,
         });
         
         const url = 'cart.php?add=1&id=' + encodeURIComponent(productId) + 
@@ -150,6 +152,7 @@ addToCartBtns.forEach(function(btn) {
                     '&price=' + encodeURIComponent(productPrice) + 
                     '&image=' + encodeURIComponent(productImage) + 
                     '&stock=' + encodeURIComponent(productStock) + 
+                    '&sizes=' + encodeURIComponent(productSizes) + 
                     '&qty=1';
         
         window.location.href = url;

@@ -53,6 +53,7 @@ $cancelledOrders = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Canc
 
 // Get unread messages count for badge
 $unreadMessages = $pdo->query("SELECT COUNT(*) FROM messages WHERE status = 'unread'")->fetchColumn();
+$processingOrdersCount = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Processing'")->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +130,9 @@ $unreadMessages = $pdo->query("SELECT COUNT(*) FROM messages WHERE status = 'unr
         .address-cell { font-size: 13px; color: #ccc; max-width: 200px; }
         .items-cell { font-size: 13px; color: #fff; max-width: 250px; }
         .items-cell .product-item { display: inline-block; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; margin: 2px; font-size: 12px; }
-        .items-cell .product-item .qty { color: #ffc107; }
+        .items-cell .product-item .qty { color: #17a2b8;
+    font-size: 15px;
+    font-weight: 600; }
         
         @media (max-width: 768px) { .admin-sidebar { width: 200px; } .admin-content { margin-left: 200px; padding: 15px; width: calc(100% - 200px); } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 480px) { .admin-sidebar { width: 60px; } .admin-sidebar ul li a span { display: none; } .admin-sidebar ul li a i { margin-right: 0; font-size: 18px; } .admin-content { margin-left: 60px; padding: 10px; width: calc(100% - 60px); } .stats-grid { grid-template-columns: 1fr; } }
@@ -211,7 +214,11 @@ body::before {
             <ul>
                 <li><a href="index.php"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
                 <li><a href="products.php"><i class="fas fa-box"></i> <span>Products</span></a></li>
-                <li><a href="orders.php" class="active"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                <li><a href="orders.php"><i class="fas fa-shopping-cart"></i> <span>Orders</span>
+    <?php if ($processingOrdersCount > 0): ?>
+        <span style="background:#ff4444;color:#fff;border-radius:50%;padding:2px 8px;font-size:11px;margin-left:5px;"><?php echo $processingOrdersCount; ?></span>
+    <?php endif; ?>
+</a></li>
                 <li><a href="messages.php"><i class="fas fa-envelope"></i> <span>Messages</span>
                     <?php if ($unreadMessages > 0): ?>
                         <span style="background:#ff4444;color:#fff;border-radius:50%;padding:2px 8px;font-size:11px;margin-left:5px;"><?php echo $unreadMessages; ?></span>
@@ -290,13 +297,16 @@ body::before {
                                 <td class="address-cell"><?php echo $order['shipping_address'] ?? 'N/A'; ?></td>
                                 <td><?php echo $order['city'] ?? 'N/A'; ?></td>
                                 <td class="items-cell">
-                                    <?php foreach ($items as $item): ?>
-                                        <span class="product-item">
-                                            <?php echo htmlspecialchars($item['product_name']); ?> 
-                                            <span class="qty">x<?php echo $item['quantity']; ?></span>
-                                        </span>
-                                    <?php endforeach; ?>
-                                </td>
+    <?php foreach ($items as $item): ?>
+        <span class="product-item">
+            <?php echo htmlspecialchars($item['product_name']); ?> 
+            <?php if (!empty($item['size'])): ?>
+                <span class="size" style="color:#17a2b8;font-size:15px;">[<?php echo htmlspecialchars($item['size']); ?>]</span>
+            <?php endif; ?>
+            <span class="qty">x<?php echo $item['quantity']; ?></span>
+        </span>
+    <?php endforeach; ?>
+</td>
                                 <td>₱<?php echo number_format($order['total'], 2); ?></td>
                                 <td>
                                     <span class="badge badge-<?php echo strtolower($order['status']); ?>">

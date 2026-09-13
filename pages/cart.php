@@ -2,6 +2,10 @@
 session_start();
 require_once '../database/config.php';
 
+echo "<pre>";
+print_r($_SESSION['cart']);
+echo "</pre>";
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -27,13 +31,15 @@ if (!empty($_SESSION['cart'])) {
 
 if (isset($_GET['add']) && $_GET['add'] == 1) {
     $product = [
-        'id' => isset($_GET['id']) ? (int)$_GET['id'] : 0,
-        'name' => isset($_GET['name']) ? $_GET['name'] : 'Product',
-        'price' => isset($_GET['price']) ? (float)$_GET['price'] : 0,
-        'image' => isset($_GET['image']) ? $_GET['image'] : 'default.jpg',
-        'quantity' => isset($_GET['qty']) ? (int)$_GET['qty'] : 1,
-        'stock' => isset($_GET['stock']) ? (int)$_GET['stock'] : 10
-    ];
+    'id' => isset($_GET['id']) ? (int)$_GET['id'] : 0,
+    'name' => isset($_GET['name']) ? $_GET['name'] : 'Product',
+    'price' => isset($_GET['price']) ? (float)$_GET['price'] : 0,
+    'image' => isset($_GET['image']) ? $_GET['image'] : 'default.jpg',
+    'quantity' => isset($_GET['qty']) ? (int)$_GET['qty'] : 1,
+    'stock' => isset($_GET['stock']) ? (int)$_GET['stock'] : 10,
+    'sizes' => isset($_GET['sizes']) ? $_GET['sizes'] : 'S,M,L,XL,XXL',
+    'size' => ''
+];
     
 
     $found = false;
@@ -95,13 +101,23 @@ if (isset($_POST['update_quantity'])) {
             $_SESSION['cart'][$index]['quantity'] = $quantity;
         }
     }
-    
-
     $total = 0;
     foreach ($_SESSION['cart'] as $item) {
         $total += $item['price'] * $item['quantity'];
     }
     echo json_encode(['success' => true, 'total' => $total]);
+    exit();
+}
+
+if (isset($_POST['update_size'])) {
+    $index = (int)$_POST['index'];
+    $size = $_POST['size'] ?? '';
+    
+    if (isset($_SESSION['cart'][$index])) {
+        $_SESSION['cart'][$index]['size'] = $size;
+    }
+    
+    echo json_encode(['success' => true]);
     exit();
 }
 
@@ -216,6 +232,25 @@ foreach ($cart as $item) {
                                             <span><?php echo htmlspecialchars($item['name']); ?></span>
                                         </td>
                                         <td class="cart-price">₱<?php echo number_format($item['price'], 2); ?></td>
+
+<!-- SIZE SELECTOR -->
+<td class="cart-size">
+    <select class="size-select-cart" 
+            data-index="<?php echo $index; ?>"
+            data-product-id="<?php echo $item['id']; ?>">
+        <option value="">Select Size</option>
+        <?php 
+        $sizes = explode(',', $item['sizes'] ?? 'S,M,L,XL,XXL');
+        foreach ($sizes as $size): 
+            $size = trim($size);
+        ?>
+            <option value="<?php echo $size; ?>" <?php echo ($item['size'] ?? '') == $size ? 'selected' : ''; ?>>
+                <?php echo $size; ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</td>
+
                                         <td class="cart-quantity">
                                             <?php 
                                             //Get updated stock from database
@@ -301,6 +336,20 @@ foreach ($cart as $item) {
 
    
     <script>
+
+document.querySelectorAll('.size-select-cart').forEach(function(select) {
+    select.addEventListener('change', function() {
+        const index = this.dataset.index;
+        const size = this.value;
+        
+        fetch('cart.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'update_size=1&index=' + index + '&size=' + encodeURIComponent(size)
+        });
+    });
+});        
+
  
     document.querySelectorAll('.qty-input').forEach(function(input) {
         input.addEventListener('change', function() {

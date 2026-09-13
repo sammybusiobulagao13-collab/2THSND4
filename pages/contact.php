@@ -59,11 +59,6 @@ if (isset($_SESSION['contact_success'])) {
     $showPopup = true;
     unset($_SESSION['contact_success']);
 }
-
-if (isset($_SESSION['contact_error'])) {
-    $errorMessage = $_SESSION['contact_error'];
-    unset($_SESSION['contact_error']);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,12 +143,6 @@ if (isset($_SESSION['contact_error'])) {
                     <i class="fas fa-exclamation-triangle"></i> 
                     Please <a href="../login/login.php?redirect=contact">Login</a> or 
                     <a href="../login/login.php?redirect=contact">Sign Up</a> to send us a message.
-                </div>
-            <?php endif; ?>
-            
-            <?php if ($errorMessage): ?>
-                <div class="error-message">
-                    <i class="fas fa-exclamation-circle"></i> <?php echo $errorMessage; ?>
                 </div>
             <?php endif; ?>
             

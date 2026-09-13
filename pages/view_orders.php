@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 session_start();
 require_once '../database/config.php';
@@ -154,23 +152,24 @@ foreach ($orders as $key => $order) {
     
     <!-- VIEW RECEIPT BUTTON -->
     <button class="btn-sm" onclick="showReceipt(
-        '<?php echo $order['order_number']; ?>',
-        '<?php echo date('M d, Y h:i A', strtotime($order['created_at'])); ?>',
-        '<?php echo $order['status']; ?>',
-        '<?php echo htmlspecialchars($order['shipping_address']); ?>',
-        '<?php echo htmlspecialchars($order['city']); ?>',
-        '<?php echo htmlspecialchars($order['phone']); ?>',
-        <?php echo $order['total']; ?>,
-        [
-            <?php foreach ($order['items'] as $item): ?>
-                {
-                    name: '<?php echo addslashes($item['product_name']); ?>',
-                    qty: <?php echo $item['quantity']; ?>,
-                    price: <?php echo $item['price']; ?>
-                },
-            <?php endforeach; ?>
-        ]
-    )">
+    '<?php echo $order['order_number']; ?>',
+    '<?php echo date('M d, Y h:i A', strtotime($order['created_at'])); ?>',
+    '<?php echo $order['status']; ?>',
+    '<?php echo htmlspecialchars($order['shipping_address']); ?>',
+    '<?php echo htmlspecialchars($order['city']); ?>',
+    '<?php echo htmlspecialchars($order['phone']); ?>',
+    <?php echo $order['total']; ?>,
+    [
+        <?php foreach ($order['items'] as $item): ?>
+            {
+                name: '<?php echo addslashes($item['product_name']); ?>',
+                size: '<?php echo addslashes($item['size'] ?? 'N/A'); ?>',
+                qty: <?php echo $item['quantity']; ?>,
+                price: <?php echo $item['price']; ?>
+            },
+        <?php endforeach; ?>
+    ]
+)">
         <i class="fas fa-receipt"></i> View Receipt
     </button>
 </div>

@@ -30,16 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $city = $_POST['city'] ?? '';
     $zip_code = $_POST['zip'] ?? '';
     $phone = $_POST['phone'] ?? '';
+    $payment_method = 'Cash on Delivery';
     
     try {
         $pdo->beginTransaction();
         
         // Insert into orders table
-        $stmt = $pdo->prepare("
-            INSERT INTO orders (user_id, order_number, total, status, shipping_address, city, zip_code, phone) 
-            VALUES (?, ?, ?, 'Processing', ?, ?, ?, ?)
-        ");
-        $stmt->execute([$user_id, $orderId, $total, $shipping_address, $city, $zip_code, $phone]);
+$stmt = $pdo->prepare("
+    INSERT INTO orders (user_id, order_number, total, status, payment_method, shipping_address, city, zip_code, phone) 
+    VALUES (?, ?, ?, 'Processing', ?, ?, ?, ?, ?)
+");
+$stmt->execute([$user_id, $orderId, $total, $payment_method, $shipping_address, $city, $zip_code, $phone]);
         $order_id = $pdo->lastInsertId();
 
         $stmt = $pdo->prepare("SELECT order_number FROM orders WHERE id = ?");
@@ -47,13 +48,14 @@ $stmt->execute([$order_id]);
 $order_number = $stmt->fetchColumn();
         
         // Insert into order_items and update stock
-        $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-        $updateStock = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
-        
-        foreach ($cart as $item) {
-            $stmt->execute([$order_id, $item['id'], $item['quantity'], $item['price']]);
-            $updateStock->execute([$item['quantity'], $item['id'], $item['quantity']]);
-        }
+$stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price, size) VALUES (?, ?, ?, ?, ?)");
+$updateStock = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
+
+foreach ($cart as $item) {
+    $size = $item['size'] ?? 'M';
+    $stmt->execute([$order_id, $item['id'], $item['quantity'], $item['price'], $size]);
+    $updateStock->execute([$item['quantity'], $item['id'], $item['quantity']]);
+}
         
         $pdo->commit();
         
@@ -62,7 +64,7 @@ $order_number = $stmt->fetchColumn();
         $error = 'Order failed: ' . $e->getMessage();
     }
     $orderData = [
-    'id' => $order_number,   // ← GIKAN SA DATABASE
+    'id' => $order_number, 
     'items' => $cart,
     'total' => $total,
     'date' => date('Y-m-d H:i:s'),
@@ -201,21 +203,31 @@ $order_number = $stmt->fetchColumn();
                     
                 
                     <div class="checkout-details">
-                        <h2>Shipping Details</h2>
-                        <div class="form-group">
-                            <input type="text" name="address" placeholder="Shipping Address" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="city" placeholder="City / Municipality" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="zip" placeholder="ZIP Code" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="phone" placeholder="Phone Number" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary checkout-submit">Place Order</button>
-                    </div>
+    <h2>Shipping Details</h2>
+    <div class="form-group">
+        <input type="text" name="address" placeholder="Shipping Address" required>
+    </div>
+    <div class="form-group">
+        <input type="text" name="city" placeholder="City / Municipality" required>
+    </div>
+    <div class="form-group">
+        <input type="text" name="zip" placeholder="ZIP Code" required>
+    </div>
+    <div class="form-group">
+        <input type="text" name="phone" placeholder="Phone Number" required>
+    </div>
+    
+    <!-- PAYMENT METHOD -->
+    <div class="form-group">
+        <label style="color:#aaa;font-size:13px;display:block;margin-bottom:8px;">Mode of Payment</label>
+        <div style="width:100%;padding:14px 18px;border:1px solid rgba(255,193,7,0.3);border-radius:10px;background:rgba(255,193,7,0.08);color:#ffc107;font-size:15px;font-family:Arial,sans-serif;display:flex;align-items:center;gap:10px;">
+            <i class="fas fa-money-bill-wave" style="font-size:18px;"></i>
+            <span>Cash on Delivery (COD)</span>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary checkout-submit">Place Order</button>
+</div>
                     
                 </div>
             </form>
