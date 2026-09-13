@@ -137,10 +137,32 @@ foreach ($orders as &$order) {
                         </div>
                         
                         <div class="order-footer" style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);">
-                            <div class="order-total" style="font-size:16px;color:#888;">
-                                Total: <strong style="font-size:18px;color:#ffc107;margin-left:10px;">₱<?php echo number_format($order['total'], 2); ?></strong>
-                            </div>
-                        </div>
+    <div class="order-total" style="font-size:16px;color:#888;">
+        Total: <strong style="font-size:18px;color:#ffc107;margin-left:10px;">₱<?php echo number_format($order['total'], 2); ?></strong>
+    </div>
+    
+    <!-- VIEW RECEIPT BUTTON -->
+    <button class="btn-sm" onclick="showReceipt(
+        '<?php echo $order['order_number']; ?>',
+        '<?php echo date('M d, Y h:i A', strtotime($order['created_at'])); ?>',
+        '<?php echo $order['status']; ?>',
+        '<?php echo htmlspecialchars($order['shipping_address']); ?>',
+        '<?php echo htmlspecialchars($order['city']); ?>',
+        '<?php echo htmlspecialchars($order['phone']); ?>',
+        <?php echo $order['total']; ?>,
+        [
+            <?php foreach ($order['items'] as $item): ?>
+                {
+                    name: '<?php echo addslashes($item['product_name']); ?>',
+                    qty: <?php echo $item['quantity']; ?>,
+                    price: <?php echo $item['price']; ?>
+                },
+            <?php endforeach; ?>
+        ]
+    )">
+        <i class="fas fa-receipt"></i> View Receipt
+    </button>
+</div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -154,6 +176,52 @@ foreach ($orders as &$order) {
         <?php endif; ?>
     </div>
 </section>
+<!-- RECEIPT MODAL -->
+<div class="receipt-modal-overlay" id="receiptModal">
+    <div class="receipt-modal">
+        <div class="receipt-modal-content">
+            <div class="receipt-header">
+                <h2>RECEIPT</h2>
+                <button class="receipt-close" onclick="closeReceipt()">&times;</button>
+            </div>
+            
+            <div class="receipt-info">
+                <div class="receipt-row">
+                    <span>Order #:</span>
+                    <strong id="receiptOrderNumber"></strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Date:</span>
+                    <strong id="receiptDate"></strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Status:</span>
+                    <strong id="receiptStatus"></strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Address:</span>
+                    <strong id="receiptAddress"></strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Phone:</span>
+                    <strong id="receiptPhone"></strong>
+                </div>
+            </div>
+            
+            <div class="receipt-items" id="receiptItems">
+                
+            </div>
+            
+            <div class="receipt-total">
+                <span>TOTAL:</span>
+                <strong id="receiptTotal"></strong>
+            </div>
+            
+            <button class="btn-primary" onclick="closeReceipt()">Close</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- LOGOUT MODAL -->
 <div class="logout-modal-overlay" id="logoutModal" style="display: none;">
@@ -177,6 +245,45 @@ function showLogoutModal(event) {
 function closeLogoutModal() {
     document.getElementById('logoutModal').style.display = 'none';
 }
+
+function showReceipt(orderNumber, date, status, address, city, phone, total, items) {
+    document.getElementById('receiptOrderNumber').textContent = orderNumber;
+    document.getElementById('receiptDate').textContent = date;
+    document.getElementById('receiptStatus').textContent = status;
+    document.getElementById('receiptAddress').textContent = address + ', ' + city;
+    document.getElementById('receiptPhone').textContent = phone;
+    document.getElementById('receiptTotal').textContent = '₱' + total.toFixed(2);
+    
+    let itemsHTML = '';
+    items.forEach(function(item) {
+        itemsHTML += `
+            <div class="receipt-item">
+                <span>${item.name} x${item.qty}</span>
+                <span>₱${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+        `;
+    });
+    document.getElementById('receiptItems').innerHTML = itemsHTML;
+    
+    document.getElementById('receiptModal').style.display = 'flex';
+}
+
+function closeReceipt() {
+    document.getElementById('receiptModal').style.display = 'none';
+}
+
+document.getElementById('receiptModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeReceipt();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeReceipt();
+    }
+});
+
 </script>
 
 <script src="../script.js"></script>

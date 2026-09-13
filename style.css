@@ -471,14 +471,14 @@ body {
 .product-card h3 {
     font-family: var(--font-primary);
     font-size: 20px;
-    color: #ffc107;
+    color: #ffffff;
     margin: 15px 15px 8px 15px;
 }
 
 .product-card .price {
     font-size: 20px;
     font-weight: 700;
-    color: #f0f0f0;
+    color: #ff4444;
     margin-bottom: 15px;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -1808,8 +1808,8 @@ body {
 
 .empty-cart-page h2 {
     font-family: var(--font-primary);
-    font-size: 30px;
-    color: #ffffff;
+    font-size: 10px;
+    color: #666666;
     margin-bottom: 15px;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
@@ -1817,7 +1817,7 @@ body {
 .empty-cart-page p {
     font-family: Arial, sans-serif;
     font-size: 18px;
-    color: #f0f0f0;
+    color: #666666;
     margin-bottom: 30px;
     text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
 }
@@ -3202,5 +3202,182 @@ body {
     
     .about-hero-text .about-description p {
         font-size: 14px;
+    }
+}
+
+/* RECEIPT MODAL */
+
+.receipt-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.receipt-modal {
+    background: #000000;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    animation: receiptFade 0.3s ease;
+}
+
+@keyframes receiptFade {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.receipt-modal-content {
+    padding: 30px;
+}
+
+.receipt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.receipt-header h2 {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    color: #ffffff;
+    letter-spacing: 3px;
+}
+
+.receipt-close {
+    background: none;
+    border: none;
+    color: #aaaaaa;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.receipt-close:hover {
+    color: #ff4444;
+    transform: scale(1.2);
+}
+
+.receipt-info {
+    margin-bottom: 25px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.receipt-row span {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #aaaaaa;
+}
+
+.receipt-row strong {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.receipt-items {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.receipt-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.receipt-item:last-child {
+    border-bottom: none;
+}
+
+.receipt-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.receipt-total span {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.receipt-total strong {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    color: #ffc107;
+}
+
+.receipt-modal-content .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 50px;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.receipt-modal-content .btn-primary:hover {
+    background-color: #ffffff;
+    color: #0a0a1a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+    .receipt-modal-content {
+        padding: 20px;
+    }
+    
+    .receipt-header h2 {
+        font-size: 20px;
+    }
+    
+    .receipt-total strong {
+        font-size: 18px;
     }
 }
