@@ -272,6 +272,7 @@ body::before {
                             <th>City</th>
                             <th>Items</th>
                             <th>Total</th>
+                            <th>Delivery</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -308,8 +309,13 @@ body::before {
     <?php endforeach; ?>
 </td>
                                 <td>₱<?php echo number_format($order['total'], 2); ?></td>
-                                <td>
-                                    <span class="badge badge-<?php echo strtolower($order['status']); ?>">
+<td>
+    <span style="font-size:12px;color:#17a2b8;font-weight:600;">
+        <?php echo htmlspecialchars($order['delivery_option'] ?? 'N/A'); ?>
+    </span>
+</td>
+<td>
+    <span class="badge badge-<?php echo strtolower($order['status']); ?>">
                                         <?php echo $order['status']; ?>
                                     </span>
                                 </td>

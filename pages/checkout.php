@@ -31,16 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $zip_code = $_POST['zip'] ?? '';
     $phone = $_POST['phone'] ?? '';
     $payment_method = 'Cash on Delivery';
+    $delivery_option = $_POST['delivery_option'] ?? 'LBC';
     
     try {
         $pdo->beginTransaction();
         
         // Insert into orders table
 $stmt = $pdo->prepare("
-    INSERT INTO orders (user_id, order_number, total, status, payment_method, shipping_address, city, zip_code, phone) 
-    VALUES (?, ?, ?, 'Processing', ?, ?, ?, ?, ?)
+    INSERT INTO orders (user_id, order_number, total, status, payment_method, delivery_option, shipping_address, city, zip_code, phone) 
+    VALUES (?, ?, ?, 'Processing', ?, ?, ?, ?, ?, ?)
 ");
-$stmt->execute([$user_id, $orderId, $total, $payment_method, $shipping_address, $city, $zip_code, $phone]);
+$stmt->execute([$user_id, $orderId, $total, $payment_method, $delivery_option, $shipping_address, $city, $zip_code, $phone]);
         $order_id = $pdo->lastInsertId();
 
         $stmt = $pdo->prepare("SELECT order_number FROM orders WHERE id = ?");
@@ -225,6 +226,18 @@ foreach ($cart as $item) {
             <span>Cash on Delivery (COD)</span>
         </div>
     </div>
+
+    <!-- DELIVERY OPTION -->
+<div class="form-group">
+    <label style="color:#aaa;font-size:13px;display:block;margin-bottom:8px;">Delivery Option</label>
+    <select name="delivery_option" required style="width:100%;padding:14px 18px;border:1px solid rgba(255,255,255,0.1);border-radius:10px;background:rgba(255,255,255,0.05);color:#fff;font-size:15px;font-family:Arial,sans-serif;cursor:pointer;">
+        <option value="LBC">LBC Express</option>
+        <option value="J&T">J&T Express</option>
+        <option value="Grab Express">Grab Express</option>
+        <option value="2GO">2GO Express</option>
+        <option value="Ninja Van">Ninja Van</option>
+    </select>
+</div>
     
     <button type="submit" class="btn btn-primary checkout-submit">Place Order</button>
 </div>

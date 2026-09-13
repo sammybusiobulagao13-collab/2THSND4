@@ -3486,3 +3486,26 @@ body {
         font-size: 11px;
     }
 }
+
+/*DELIVERY OPTION DROPDOWN FIX */
+
+select option {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    padding: 10px;
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+select {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+}
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #ffffff;
+}

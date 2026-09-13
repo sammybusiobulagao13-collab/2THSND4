@@ -168,15 +168,17 @@ if (isset($_SESSION['contact_success'])) {
             <?php if ($isLoggedIn): ?>
                 <form class="contact-form" method="POST" action="" id="contactForm">
                     <div class="form-group">
-                        <input type="text" name="name" placeholder="Your Name" 
-                               value="<?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : ''; ?>" 
-                               required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Your Email" 
-                               value="<?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : ''; ?>" 
-                               required>
-                    </div>
+    <input type="text" name="name" placeholder="Your Name" 
+           value="<?php echo isset($_SESSION['user']['name']) ? htmlspecialchars($_SESSION['user']['name']) : ''; ?>" 
+           readonly
+           required>
+</div>
+<div class="form-group">
+    <input type="email" name="email" placeholder="Your Email" 
+           value="<?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : ''; ?>" 
+           readonly
+           required>
+</div>
                     <div class="form-group">
                         <input type="text" name="subject" placeholder="Subject" required>
                     </div>
