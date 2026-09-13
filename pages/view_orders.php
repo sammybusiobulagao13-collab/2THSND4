@@ -177,10 +177,10 @@ foreach ($orders as $key => $order) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="empty-history" style="text-align:center;padding:80px 20px;">
+            <div class="empty-history" style="text-align:center;padding:150px 20px;">
                 <i class="fas fa-box fa-4x" style="color:#888;margin-bottom:20px;"></i>
-                <h2 style="color:#898989;font-family:var(--font-primary);font-size:30px;margin-bottom:10px;">No Orders Yet</h2>
-                <p style="color:#fff;font-size:16px;margin-bottom:25px;">You haven't placed any orders yet. Start shopping now!</p>
+                
+                <p style="color:#898989;font-size:15px;margin-bottom:15px;">You haven't placed any orders yet. Start shopping now!</p>
                 <a href="shop.php" class="btn btn-primary" style="display:inline-block;padding:16px 50px;font-family:var(--font-primary);font-weight:700;font-size:14px;letter-spacing:2px;text-decoration:none;border-radius:50px;transition:all 0.3s ease;cursor:pointer;border:2px solid #ffffff;background-color:transparent;color:#ffffff;">Start Shopping</a>
             </div>
         <?php endif; ?>

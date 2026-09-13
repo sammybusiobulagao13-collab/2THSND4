@@ -2,10 +2,6 @@
 session_start();
 require_once '../database/config.php';
 
-echo "<pre>";
-print_r($_SESSION['cart']);
-echo "</pre>";
-
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }

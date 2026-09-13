@@ -188,7 +188,7 @@ if (isset($_SESSION['contact_success'])) {
                     <button type="submit" name="send_message" class="btn btn-primary">Send Message</button>
                 </form>
             <?php else: ?>
-                <!-- ⛔ SHOW LOGIN REQUIRED MESSAGE -->
+                <!-- SHOW LOGIN REQUIRED MESSAGE -->
                 <div class="login-required">
                     <i class="fas fa-lock"></i>
                     <h3>Login Required</h3>
