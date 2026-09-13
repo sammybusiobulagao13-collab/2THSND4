@@ -14,9 +14,6 @@ if (!$order) {
     header('Location: shop.php');
     exit();
 }
-
-// Clear the order from session para di na ma-access balik
-//unset($_SESSION['last_order']);
 ?>
 
 <!DOCTYPE html>
@@ -64,16 +61,34 @@ if (!$order) {
                 </button>
             </div>
             
-            <!-- DROPDOWN MENU -->
             <div class="dropdown-menu" id="dropdownMenu">
-                <ul>
-
-                 <li><a href="#"><i class="fas fa-user"></i> <?php echo $_SESSION['user']['name']; ?></a></li>
-                    <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                    <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
-                   
-                </ul>
+    <?php if (isset($_SESSION['user'])): ?>
+        <!-- PROFILE CARD -->
+        <div class="dropdown-profile">
+            <div class="dropdown-avatar">
+                <?php echo strtoupper(substr($_SESSION['user']['name'], 0, 1)); ?>
             </div>
+            <div class="dropdown-user-info">
+                <span class="dropdown-name"><?php echo htmlspecialchars($_SESSION['user']['name']); ?></span>
+                <span class="dropdown-email"><?php echo htmlspecialchars($_SESSION['user']['email']); ?></span>
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+    <?php endif; ?>
+    
+    <ul>
+        <?php if (!isset($_SESSION['user'])): ?>
+            <li><a href="../login/login.php?redirect=home"><i class="fas fa-user"></i> Log In / Sign Up</a></li>
+        <?php endif; ?>
+        
+        <li><a href="cart.php"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        
+        <?php if (isset($_SESSION['user'])): ?>
+            <li><a href="view_orders.php"><i class="fas fa-box"></i> My Orders</a></li>
+            <li><a href="#" onclick="showLogoutModal(event)" class="logout-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        <?php endif; ?>
+    </ul>
+</div>
         </div>
     </div>
 </nav>

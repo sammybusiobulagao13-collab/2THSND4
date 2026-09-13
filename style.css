@@ -3381,3 +3381,108 @@ body {
         font-size: 18px;
     }
 }
+
+/* ==========================================
+   DROPDOWN PROFILE CARD
+   ========================================== */
+
+.dropdown-menu {
+    padding: 15px 0;
+}
+
+/* Profile Card */
+.dropdown-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    transition: all 0.3s ease;
+}
+
+/* Avatar Circle */
+.dropdown-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #000000;
+    font-family: var(--font-primary);
+    font-size: 22px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+/* User Info */
+.dropdown-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow: hidden;
+}
+
+.dropdown-name {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-email {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #aaaaaa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Divider */
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 5px 15px 10px 15px;
+}
+
+/* Logout Item - Red */
+.dropdown-menu ul li a.logout-item {
+    color: #ff4444;
+}
+
+.dropdown-menu ul li a.logout-item i {
+    color: #ff4444;
+}
+
+.dropdown-menu ul li a.logout-item:hover {
+    background-color: rgba(255, 68, 68, 0.15);
+    color: #ff4444;
+}
+
+.dropdown-menu ul li a.logout-item:hover i {
+    color: #ff4444;
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+    .dropdown-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .dropdown-name {
+        font-size: 14px;
+    }
+    
+    .dropdown-email {
+        font-size: 11px;
+    }
+}
