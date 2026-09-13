@@ -108,11 +108,11 @@ if (!$order) {
             <div class="order-box">
                 <p class="label">Order #</p>
                 <p class="order-number">
-                    #2TH-<?php echo date('Ymd') . '-' . rand(1000, 9999); ?>
-                </p>
+    #<?php echo $order['id']; ?>
+</p>
                 <p class="order-date">
-                    <?php echo date('F d, Y - h:i A'); ?>
-                </p>
+    <?php echo date('F d, Y - h:i A', strtotime($order['date'])); ?>
+</p>
             </div>
             
             <!-- Order Summary -->

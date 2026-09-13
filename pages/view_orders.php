@@ -25,7 +25,7 @@ $stmt->execute([$user_id]);
 $orders = $stmt->fetchAll();
 
 // Get order items for each order
-foreach ($orders as &$order) {
+foreach ($orders as $key => $order) {
     $stmt = $pdo->prepare("
         SELECT oi.*, p.name as product_name 
         FROM order_items oi
@@ -33,7 +33,7 @@ foreach ($orders as &$order) {
         WHERE oi.order_id = ?
     ");
     $stmt->execute([$order['id']]);
-    $order['items'] = $stmt->fetchAll();
+    $orders[$key]['items'] = $stmt->fetchAll();
 }
 ?>
 

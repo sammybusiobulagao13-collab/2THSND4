@@ -41,6 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
         $stmt->execute([$user_id, $orderId, $total, $shipping_address, $city, $zip_code, $phone]);
         $order_id = $pdo->lastInsertId();
+
+        $stmt = $pdo->prepare("SELECT order_number FROM orders WHERE id = ?");
+$stmt->execute([$order_id]);
+$order_number = $stmt->fetchColumn();
         
         // Insert into order_items and update stock
         $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
@@ -58,12 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Order failed: ' . $e->getMessage();
     }
     $orderData = [
-        'id' => $orderId,
-        'items' => $cart,
-        'total' => $total,
-        'date' => date('Y-m-d H:i:s'),
-        'status' => 'Processing'
-    ];
+    'id' => $order_number,   // ← GIKAN SA DATABASE
+    'items' => $cart,
+    'total' => $total,
+    'date' => date('Y-m-d H:i:s'),
+    'status' => 'Processing'
+];
+
     $_SESSION['last_order'] = $orderData;
     if (!isset($_SESSION['orders'])) {
         $_SESSION['orders'] = [];
