@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $orderId = '2TH-' . date('Ymd') . '-' . rand(1000, 9999);
     
-    // ===== IDUGANG NI: SAVE TO DATABASE =====
+    //SAVE TO DATABASE
     $user_id = $_SESSION['user']['id'];
     $shipping_address = $_POST['address'] ?? '';
     $city = $_POST['city'] ?? '';
@@ -57,9 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->rollBack();
         $error = 'Order failed: ' . $e->getMessage();
     }
-    // ===== END OF ADDED CODE =====
-    
-    // Create order data
     $orderData = [
         'id' => $orderId,
         'items' => $cart,
@@ -67,20 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'date' => date('Y-m-d H:i:s'),
         'status' => 'Processing'
     ];
-    
-    // Save to session for confirmation page
     $_SESSION['last_order'] = $orderData;
-    
-    // Save to orders history 
     if (!isset($_SESSION['orders'])) {
         $_SESSION['orders'] = [];
     }
     $_SESSION['orders'][] = $orderData;
     
-    // Clear the cart
     $_SESSION['cart'] = [];
     
-    // Redirect to confirmation page
     header('Location: order_confirmation.php');
     exit();
 }

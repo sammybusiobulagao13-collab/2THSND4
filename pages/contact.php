@@ -10,7 +10,7 @@ $showPopup = false;
 
 //ONLY PROCESS IF LOGGED IN AND FORM SUBMITTED
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
-    // ⛔ KUNG WALA KA-LOGIN, DILI PEDE MO-SEND
+    //KUNG WALA KA-LOGIN, DILI PEDE MO-SEND
     if (!$isLoggedIn) {
         $errorMessage = 'Please login or sign up first to send a message.';
     } else {
@@ -147,17 +147,17 @@ if (isset($_SESSION['contact_error'])) {
             
             <div class="contact-info">
                 <div class="contact-item">
-                    <span class="contact-icon">📧</span>
+                    <span class="contact-icon"></span>
                     <h3>Email</h3>
                     <p>2THSND4@gmail.com</p>
                 </div>
                 <div class="contact-item">
-                    <span class="contact-icon">📱</span>
+                    <span class="contact-icon"></span>
                     <h3>Phone</h3>
                     <p>+63 936 313 6992</p>
                 </div>
                 <div class="contact-item">
-                    <span class="contact-icon">📍</span>
+                    <span class="contact-icon"></span>
                     <h3>Address</h3>
                     <p>Dumaguete City, Neg Or. Philippines</p>
                 </div>

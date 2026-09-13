@@ -2373,11 +2373,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.service-section:hover {
-    border-color: var(--primary-color);
-    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.5);
-}
-
 .service-header {
     display: flex;
     align-items: center;
@@ -3111,7 +3106,7 @@ body {
     }
 }
 
-/*ABOUT HERO - TEXT OVERLAY SA IMAGE*/
+/*ABOUT HERO*/
 
 .about-hero {
     position: relative;
