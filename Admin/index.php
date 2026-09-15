@@ -332,7 +332,7 @@ $recentOrders = $pdo->query("
                     <div class="stat-label">Total Customers</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">📩</div>
+                    <div class="stat-icon"></div>
                     <div class="stat-number"><?php echo $unreadMessages; ?></div>
                     <div class="stat-label">Unread Messages</div>
                 </div>
